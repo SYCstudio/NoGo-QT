@@ -1,4 +1,5 @@
-QT       += core gui
+QT       += core gui \
+    quick
 QT += svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -18,12 +19,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     chessboardbase.cpp \
+    chessgrid.cpp \
     main.cpp \
     maingamewindow.cpp \
     mainwidget.cpp
 
 HEADERS += \
     chessboardbase.h \
+    chessgrid.h \
     maingamewindow.h \
     mainwidget.h
 

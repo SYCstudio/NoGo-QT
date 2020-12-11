@@ -4,18 +4,27 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QGridLayout>
+#include <QMessageBox>
+#include "chessgrid.h"
 
 class chessboardBase : public QWidget
 {
     Q_OBJECT
 public:
     explicit chessboardBase(QWidget *parent = nullptr, int size = 50);
+    int getTurncnt();
+    bool check(int x, int y,int opt = 0);//opt == 0:disable msg prompt;else show msg
 
-signals:
 private:
-    int boardStatus[9][9];
-    QPushButton *boardButton[9][9];
+    int boardStatus[9][9], turncnt;
+    chessGrid *boardButton[9][9];
     QGridLayout *boardLayout;
+
+    int disableBackup[9][9];
+
+    void click();
+    void disableAllGrid();
+    void restoreAllGrid();
 };
 
 #endif // CHESSBOARDBASE_H
