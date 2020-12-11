@@ -41,12 +41,17 @@ bool chessboardBase::check(int x, int y, int opt)
         if (opt) QMessageBox::warning(this, tr("Warning!"), tr("This position has been filled."), QMessageBox::Ok);
         return false;
     }
+    if (turncnt == 0 && x == 4 && y == 4) {
+        if (opt) QMessageBox::warning(this, tr("Warning!"), tr("You cannot select the middle position at first step."), QMessageBox::Ok);
+        return false;
+    }
     return true;
 }
 void chessboardBase::disableAllGrid()
 {
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++) {
+            //qDebug() << boardButton[i][j] -> isEnabled();
             disableBackup[i][j] = boardButton[i][j] -> isEnabled();
             boardButton[i][j] -> setEnabled(0);
         }
@@ -59,6 +64,28 @@ void chessboardBase::restoreAllGrid()
             boardButton[i][j] -> setEnabled(disableBackup[i][j]);
     return;
 }
-void chessboardBase::click()
+void chessboardBase::click(int opt)
 {
+    disableAllGrid();
+    int x = -1, y = -1;
+    for (int i = 0; i < 9; i++)
+        for (int j = 0; j < 9; j++)
+            if (boardButton[i][j] -> getMark()) {
+                x = i; y = j;
+            }
+    if (x == -1 && y == -1) {
+        restoreAllGrid(); return;
+    }
+    qDebug() << x << y ;
+    boardButton[x][y] -> setMark(0);
+    if (check(x, y, opt) == false) {
+        restoreAllGrid();
+        return;
+    }
+    restoreAllGrid();
+    boardButton[x][y] -> setEnabled(0);
+    ++turncnt;
+    if (turncnt & 1) boardButton[x][y] -> setStyleSheet("background-color: black");
+    else boardButton[x][y] -> setStyleSheet("background-color:white");
+    return;
 }

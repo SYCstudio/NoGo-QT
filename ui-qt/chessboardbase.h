@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QGridLayout>
 #include <QMessageBox>
+#include <QDebug>
 #include "chessgrid.h"
 
 class chessboardBase : public QWidget
@@ -22,9 +23,11 @@ private:
 
     int disableBackup[9][9];
 
-    void click();
     void disableAllGrid();
     void restoreAllGrid();
+
+private slots:
+    void click(int opt = 1);
 };
 
 #endif // CHESSBOARDBASE_H

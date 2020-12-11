@@ -10,12 +10,13 @@ class chessGrid : public QPushButton
 {
     Q_OBJECT
 public:
-    explicit chessGrid(QWidget *parent = nullptr);
-private:
     int mark;
+public:
+    explicit chessGrid(QWidget *parent = nullptr);
+    int getMark();
 
 signals:
-private slots:
+public slots:
     void setMark(int opt = 1);
 };
 
