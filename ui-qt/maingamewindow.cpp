@@ -23,7 +23,7 @@ mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
         historyButtons[i] -> setEnabled(0);
     }
 
-    chessBoard = new QWidget();//Attention! Need to rewrite. PLACEHOLDER ONLY!
+    chessBoard = new chessboardBase();
 
     //initialize layout
     rightLayout = new QGridLayout();

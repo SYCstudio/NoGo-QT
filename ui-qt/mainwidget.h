@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QApplication>
 #include "maingamewindow.h"
+#include "chessboardbase.h"
 
 class mainWidget : public QWidget
 {
@@ -25,7 +26,7 @@ private:
     QGridLayout *mainWindowLayout;
     QVBoxLayout *leftButtonLayout;
     QWidget *logoWidget;//logo placeHolder
-    QWidget *rightWidget;//right placeHolder
+    chessboardBase *rightWidget;
 
 private slots:
     void startNewGame();

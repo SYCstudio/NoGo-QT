@@ -7,6 +7,7 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include "chessboardbase.h"
 
 class mainGameWindow : public QWidget
 {
@@ -14,7 +15,7 @@ class mainGameWindow : public QWidget
 public:
     explicit mainGameWindow(QWidget *parent = nullptr);
 private:
-    QWidget *chessBoard;//board placeHolder
+    chessboardBase * chessBoard;
     QLabel *timePrompt;
     QLabel *timeShow;
     QLabel *turnPrompt;

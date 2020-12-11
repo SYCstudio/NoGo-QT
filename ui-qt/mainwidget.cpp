@@ -8,7 +8,7 @@ mainWidget::mainWidget(QWidget *parent)
     loadExistsGameButton = new QPushButton(this);
     exitButton = new QPushButton(this);
     logoWidget = new QWidget(this);
-    rightWidget = new QWidget(this);
+    rightWidget = new chessboardBase(this, 20);
 
     startNewGameButton -> setText(tr("New game"));
     loadExistsGameButton -> setText(tr("Load"));
