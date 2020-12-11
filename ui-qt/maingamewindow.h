@@ -30,6 +30,7 @@ private:
 
 private slots:
     void turnShowRefresh();
+    void gameEnd(int opt);
 
 };
 

@@ -20,6 +20,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     chessboardbase.cpp \
     chessgrid.cpp \
+    disjointsetunion.cpp \
     main.cpp \
     maingamewindow.cpp \
     mainwidget.cpp
@@ -27,6 +28,7 @@ SOURCES += \
 HEADERS += \
     chessboardbase.h \
     chessgrid.h \
+    disjointsetunion.h \
     maingamewindow.h \
     mainwidget.h
 

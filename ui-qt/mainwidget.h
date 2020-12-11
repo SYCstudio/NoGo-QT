@@ -8,6 +8,7 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QApplication>
+#include <QDebug>
 #include "maingamewindow.h"
 #include "chessboardbase.h"
 
@@ -30,5 +31,6 @@ private:
 
 private slots:
     void startNewGame();
+    void refreshBoard(int opt);
 };
 #endif // MAINWIDGET_H

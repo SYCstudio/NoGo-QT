@@ -48,6 +48,7 @@ mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
     //setup connect
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(chessBoard, SIGNAL(turncntChanged()), this, SLOT(turnShowRefresh()));
+    connect(chessBoard, SIGNAL(gameEnd(int)), this, SLOT(gameEnd(int)));
 
     return;
 }
@@ -58,4 +59,11 @@ void mainGameWindow::turnShowRefresh()
     turnShow -> setText(QString("%1").arg(chessBoard -> getTurncnt()));
     //turnPrompt -> setText(QString("%1").arg(chessBoard -> getTurncnt()));
     return;
+}
+void mainGameWindow::gameEnd(int opt)
+{
+    QString buf(tr("The game is end.\nThe winner is "));
+    buf += opt? tr("black") : tr("white");
+    QMessageBox::information(this, tr("end."), buf, QMessageBox::Ok);
+    close();
 }
