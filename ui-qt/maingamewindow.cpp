@@ -47,6 +47,15 @@ mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
 
     //setup connect
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(chessBoard, SIGNAL(turncntChanged()), this, SLOT(turnShowRefresh()));
 
+    return;
+}
+
+void mainGameWindow::turnShowRefresh()
+{
+    //qDebug() << "get-in turnShowRefresh";
+    turnShow -> setText(QString("%1").arg(chessBoard -> getTurncnt()));
+    //turnPrompt -> setText(QString("%1").arg(chessBoard -> getTurncnt()));
     return;
 }

@@ -76,7 +76,7 @@ void chessboardBase::click(int opt)
     if (x == -1 && y == -1) {
         restoreAllGrid(); return;
     }
-    qDebug() << x << y ;
+    //qDebug() << x << y ;
     boardButton[x][y] -> setMark(0);
     if (check(x, y, opt) == false) {
         restoreAllGrid();
@@ -84,8 +84,15 @@ void chessboardBase::click(int opt)
     }
     restoreAllGrid();
     boardButton[x][y] -> setEnabled(0);
-    ++turncnt;
+    turncntPlus();
     if (turncnt & 1) boardButton[x][y] -> setStyleSheet("background-color: black");
     else boardButton[x][y] -> setStyleSheet("background-color:white");
     return;
+}
+
+void chessboardBase::turncntPlus()
+{
+    qDebug() << "get-in turncntPlus";
+    ++turncnt;
+    emit turncntChanged();
 }

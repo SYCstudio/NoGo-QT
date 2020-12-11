@@ -15,6 +15,7 @@ public:
     explicit chessboardBase(QWidget *parent = nullptr, int size = 50);
     int getTurncnt();
     bool check(int x, int y,int opt = 0);//opt == 0:disable msg prompt;else show msg
+    void turncntPlus();
 
 private:
     int boardStatus[9][9], turncnt;
@@ -25,6 +26,9 @@ private:
 
     void disableAllGrid();
     void restoreAllGrid();
+
+signals:
+    void turncntChanged();
 
 private slots:
     void click(int opt = 1);

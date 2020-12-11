@@ -7,6 +7,7 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QString>
 #include "chessboardbase.h"
 
 class mainGameWindow : public QWidget
@@ -27,7 +28,8 @@ private:
     QGridLayout *rightLayout;
     QHBoxLayout *bottomLayout;
 
-signals:
+private slots:
+    void turnShowRefresh();
 
 };
 
