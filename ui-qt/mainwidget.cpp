@@ -3,6 +3,7 @@
 mainWidget::mainWidget(QWidget *parent)
     : QWidget(parent)
 {
+    //initialize buttons and labels
     startNewGameButton = new QPushButton(this);
     loadExistsGameButton = new QPushButton(this);
     exitButton = new QPushButton(this);
@@ -13,6 +14,7 @@ mainWidget::mainWidget(QWidget *parent)
     loadExistsGameButton -> setText(tr("Load"));
     exitButton -> setText(tr("Exit"));
 
+    //initialzize layout
     mainWindowLayout = new QGridLayout();
     leftButtonLayout = new QVBoxLayout();
 
@@ -26,11 +28,21 @@ mainWidget::mainWidget(QWidget *parent)
 
     setLayout(mainWindowLayout);
 
+    //setup connect
     connect(exitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
+    connect(startNewGameButton, SIGNAL(clicked()), this, SLOT(startNewGame()));
     return;
 }
 
 mainWidget::~mainWidget()
 {
+}
+
+void mainWidget::startNewGame()
+{
+    mainGameWindow *newgame = new mainGameWindow();
+    newgame -> show();
+    //delete newgame;
+    return;
 }
 

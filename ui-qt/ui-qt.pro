@@ -18,9 +18,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
+    maingamewindow.cpp \
     mainwidget.cpp
 
 HEADERS += \
+    maingamewindow.h \
     mainwidget.h
 
 TRANSLATIONS += \

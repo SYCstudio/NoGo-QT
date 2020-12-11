@@ -8,6 +8,7 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QApplication>
+#include "maingamewindow.h"
 
 class mainWidget : public QWidget
 {
@@ -25,5 +26,8 @@ private:
     QVBoxLayout *leftButtonLayout;
     QWidget *logoWidget;//logo placeHolder
     QWidget *rightWidget;//right placeHolder
+
+private slots:
+    void startNewGame();
 };
 #endif // MAINWIDGET_H
