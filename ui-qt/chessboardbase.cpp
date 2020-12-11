@@ -8,7 +8,7 @@ chessboardBase::chessboardBase(QWidget *parent,int size) : QWidget(parent)
     //initialize buttons and labels
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++) {
-            boardButton[i][j] = new chessGrid();
+            boardButton[i][j] = new QPushButton();
             boardButton[i][j] -> setFixedSize(size, size);
         }
 
@@ -19,11 +19,15 @@ chessboardBase::chessboardBase(QWidget *parent,int size) : QWidget(parent)
     setLayout(boardLayout);
 
     //initialize connect
+    qDebug() << "A";
+    QSignalMapper *mapForBoard = new QSignalMapper();
     for (int i = 0; i < 9; i++)
-        for (int j = 0; j < 9; j++) {
-            connect(boardButton[i][j], SIGNAL(clicked()), boardButton[i][j], SLOT(setMark()));
-            connect(boardButton[i][j], SIGNAL(clicked()), this, SLOT(click()));
-        }
+        for (int j = 0; j < 9; j++)
+            connect(boardButton[i][j], SIGNAL(clicked()), mapForBoard, SLOT(map()));
+    for (int i = 0; i < 9; i++)
+        for (int j = 0; j < 9; j++)
+            mapForBoard -> setMapping(boardButton[i][j], i*9+j);
+    connect(mapForBoard, SIGNAL(mapped(int)), this, SLOT(click(int)));
 
     return;
 }
@@ -64,20 +68,15 @@ void chessboardBase::restoreAllGrid()
             boardButton[i][j] -> setEnabled(disableBackup[i][j]);
     return;
 }
-void chessboardBase::click(int opt)
+void chessboardBase::click(int xy, int opt)
 {
+    //qDebug() << xy << opt;
     disableAllGrid();
-    int x = -1, y = -1;
-    for (int i = 0; i < 9; i++)
-        for (int j = 0; j < 9; j++)
-            if (boardButton[i][j] -> getMark()) {
-                x = i; y = j;
-            }
+    int x = xy / 9, y = xy % 9;
     if (x == -1 && y == -1) {
         restoreAllGrid(); return;
     }
-    //qDebug() << x << y ;
-    boardButton[x][y] -> setMark(0);
+    qDebug() << x << y ;
     if (check(x, y, opt) == false) {
         restoreAllGrid();
         return;
@@ -85,6 +84,7 @@ void chessboardBase::click(int opt)
     restoreAllGrid();
     boardButton[x][y] -> setEnabled(0);
     turncntPlus();
+    boardStatus[x][y] = 1;
     if (turncnt & 1) boardButton[x][y] -> setStyleSheet("background-color: black");
     else boardButton[x][y] -> setStyleSheet("background-color:white");
     return;
@@ -92,7 +92,7 @@ void chessboardBase::click(int opt)
 
 void chessboardBase::turncntPlus()
 {
-    qDebug() << "get-in turncntPlus";
+    //qDebug() << "get-in turncntPlus";
     ++turncnt;
     emit turncntChanged();
 }

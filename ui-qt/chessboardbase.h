@@ -6,7 +6,9 @@
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QDebug>
-#include "chessgrid.h"
+#include <QSignalMapper>
+#include <algorithm>
+//#include "chessgrid.h"
 
 class chessboardBase : public QWidget
 {
@@ -19,7 +21,7 @@ public:
 
 private:
     int boardStatus[9][9], turncnt;
-    chessGrid *boardButton[9][9];
+    QPushButton *boardButton[9][9];
     QGridLayout *boardLayout;
 
     int disableBackup[9][9];
@@ -30,8 +32,8 @@ private:
 signals:
     void turncntChanged();
 
-private slots:
-    void click(int opt = 1);
+public slots:
+    void click(int xy, int opt = 1);
 };
 
 #endif // CHESSBOARDBASE_H
