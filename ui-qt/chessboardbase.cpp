@@ -2,8 +2,12 @@
 
 chessboardBase::chessboardBase(QWidget *parent,int size) : QWidget(parent)
 {
+    memset(clickX,0,sizeof(clickX));
+    memset(clickY,0,sizeof(clickY));
+    nowpoint = 0;
     memset(boardStatus, -1, sizeof(boardStatus));
     turncnt = 0;
+    isDisableGrid = 0;
 
     //initialize buttons and labels
     for (int i = 0; i < 9; i++)
@@ -33,10 +37,7 @@ chessboardBase::chessboardBase(QWidget *parent,int size) : QWidget(parent)
 
     return;
 }
-int chessboardBase::getTurncnt()
-{
-    return turncnt;
-}
+
 int chessboardBase::check(int x, int y, int opt)
 {
     if (outBd(x, y)) {
@@ -77,23 +78,28 @@ int chessboardBase::check(int x, int y, int opt)
     if (air * flag == 0) return -1;
     return 1;
 }
+
 void chessboardBase::disableAllGrid()
 {
+    isDisableGrid = 1;
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++) {
             //qDebug() << boardButton[i][j] -> isEnabled();
-            disableBackup[i][j] = boardButton[i][j] -> isEnabled();
             boardButton[i][j] -> setEnabled(0);
         }
     return;
 }
+
 void chessboardBase::restoreAllGrid()
 {
+    if (isDisableGrid == 0) return;
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++)
-            boardButton[i][j] -> setEnabled(disableBackup[i][j]);
+            boardButton[i][j] -> setEnabled(boardStatus[i][j] == -1);
+    isDisableGrid = 0;
     return;
 }
+
 void chessboardBase::click(int xy, int opt)
 {
     //qDebug() << xy << opt;
@@ -137,6 +143,8 @@ void chessboardBase::click(int xy, int opt)
     turncntPlus();
     if (col) boardButton[x][y] -> setStyleSheet("background-color: black");
     else boardButton[x][y] -> setStyleSheet("background-color:white");
+    clickX[turncnt] = x;
+    clickY[turncnt] = y;
 
     qDebug() << checkRet ;
     if (checkRet == -1) {
@@ -148,6 +156,33 @@ void chessboardBase::click(int xy, int opt)
 void chessboardBase::turncntPlus()
 {
     //qDebug() << "get-in turncntPlus";
-    ++turncnt;
+    ++turncnt;changeNowpoint(turncnt);
     emit turncntChanged();
+}
+
+void chessboardBase::changeNowpoint(int crt)
+{
+    nowpoint = crt;
+    emit nowpointChanged();
+    if (nowpoint != turncnt) disableAllGrid();
+    if (nowpoint == turncnt) restoreAllGrid();
+    return;
+}
+
+void chessboardBase::backTo(int round)
+{
+    qDebug() << "back to:"<<round;
+    if (round > turncnt || round < 0) return;
+    if (nowpoint < round) {
+        for (int i = nowpoint + 1; i <= round; i++)
+            if (i & 1) boardButton[clickX[i]][clickY[i]] -> setStyleSheet("background-color: white");
+            else boardButton[clickX[i]][clickY[i]] -> setStyleSheet("background-color: black");
+    }
+    else {
+        for (int i = round + 1; i <= nowpoint; i++) boardButton[clickX[i]][clickY[i]] -> setStyleSheet("");
+    }
+
+    changeNowpoint(round);
+    qDebug() << turncnt << nowpoint << isDisableGrid ;
+    return;
 }

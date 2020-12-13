@@ -8,6 +8,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QString>
+#include <QSignalMapper>
 #include "chessboardbase.h"
 
 class mainGameWindow : public QWidget
@@ -29,8 +30,9 @@ private:
     QHBoxLayout *bottomLayout;
 
 private slots:
-    void turnShowRefresh();
+    void turncntChanged();
     void gameEnd(int opt);
+    void nowpointChanged();
 
 };
 

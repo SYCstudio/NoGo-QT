@@ -47,16 +47,22 @@ mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
 
     //setup connect
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
-    connect(chessBoard, SIGNAL(turncntChanged()), this, SLOT(turnShowRefresh()));
+    connect(chessBoard, SIGNAL(turncntChanged()), this, SLOT(turncntChanged()));
     connect(chessBoard, SIGNAL(gameEnd(int)), this, SLOT(gameEnd(int)));
+
+    QSignalMapper *historyMapper = new QSignalMapper();
+    for (int i = 0; i < 81; i++) connect(historyButtons[i], SIGNAL(clicked()), historyMapper, SLOT(map()));
+    for (int i = 0; i < 81; i++) historyMapper -> setMapping(historyButtons[i], i+1);
+    connect(historyMapper, SIGNAL(mapped(int)), chessBoard, SLOT(backTo(int)));
 
     return;
 }
 
-void mainGameWindow::turnShowRefresh()
+void mainGameWindow::turncntChanged()
 {
     //qDebug() << "get-in turnShowRefresh";
     turnShow -> setText(QString("%1").arg(chessBoard -> getTurncnt()));
+    historyButtons[chessBoard -> getTurncnt() - 1] -> setEnabled(1);
     //turnPrompt -> setText(QString("%1").arg(chessBoard -> getTurncnt()));
     return;
 }
@@ -66,4 +72,8 @@ void mainGameWindow::gameEnd(int opt)
     buf += opt? tr("black") : tr("white");
     QMessageBox::information(this, tr("end."), buf, QMessageBox::Ok);
     close();
+}
+
+void mainGameWindow::nowpointChanged()
+{
 }
