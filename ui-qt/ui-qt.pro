@@ -22,13 +22,15 @@ SOURCES += \
     disjointsetunion.cpp \
     main.cpp \
     maingamewindow.cpp \
-    mainwidget.cpp
+    mainwidget.cpp \
+    nogochessboard.cpp
 
 HEADERS += \
     chessboardbase.h \
     disjointsetunion.h \
     maingamewindow.h \
-    mainwidget.h
+    mainwidget.h \
+    nogochessboard.h
 
 TRANSLATIONS += \
     ui-qt_en_GB.ts
