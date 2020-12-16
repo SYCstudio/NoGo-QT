@@ -21,13 +21,13 @@ public:
     ~mainWidget();
 
 private:
-    QPushButton *startNewGameButton;
-    QPushButton *loadExistsGameButton;
-    QPushButton *exitButton;
-    QGridLayout *mainWindowLayout;
-    QVBoxLayout *leftButtonLayout;
-    QWidget *logoWidget;//logo placeHolder
-    chessboardBase *rightWidget;
+    QPushButton *StartNewGameButton;
+    QPushButton *LoadExistsGameButton;
+    QPushButton *ExitButton;
+    QGridLayout *MainWindowLayout;
+    QVBoxLayout *LeftButtonLayout;
+    QWidget *LogoWidget;//logo placeHolder
+    chessboardBase *Chessboard;
 
 private slots:
     void startNewGame();

@@ -4,34 +4,34 @@ mainWidget::mainWidget(QWidget *parent)
     : QWidget(parent)
 {
     //initialize buttons and labels
-    startNewGameButton = new QPushButton();
-    loadExistsGameButton = new QPushButton();
-    exitButton = new QPushButton();
-    logoWidget = new QWidget();
-    rightWidget = new chessboardBase(nullptr, 20);
+    StartNewGameButton = new QPushButton();
+    LoadExistsGameButton = new QPushButton();
+    ExitButton = new QPushButton();
+    LogoWidget = new QWidget();
+    Chessboard = new chessboardBase(nullptr, 20);
 
-    startNewGameButton -> setText(tr("New game"));
-    loadExistsGameButton -> setText(tr("Load"));
-    exitButton -> setText(tr("Exit"));
+    StartNewGameButton -> setText(tr("New game"));
+    LoadExistsGameButton -> setText(tr("Load"));
+    ExitButton -> setText(tr("Exit"));
 
     //initialzize layout
-    mainWindowLayout = new QGridLayout();
-    leftButtonLayout = new QVBoxLayout();
+    MainWindowLayout = new QGridLayout();
+    LeftButtonLayout = new QVBoxLayout();
 
-    leftButtonLayout -> addWidget(startNewGameButton);
-    leftButtonLayout -> addWidget(loadExistsGameButton);
-    leftButtonLayout -> addWidget(exitButton);
+    LeftButtonLayout -> addWidget(StartNewGameButton);
+    LeftButtonLayout -> addWidget(LoadExistsGameButton);
+    LeftButtonLayout -> addWidget(ExitButton);
 
-    mainWindowLayout -> addWidget(logoWidget, 1, 1, 1, 2);
-    mainWindowLayout -> addLayout(leftButtonLayout, 2, 1);
-    mainWindowLayout -> addWidget(rightWidget, 2, 2);
+    MainWindowLayout -> addWidget(LogoWidget, 1, 1, 1, 2);
+    MainWindowLayout -> addLayout(LeftButtonLayout, 2, 1);
+    MainWindowLayout -> addWidget(Chessboard, 2, 2);
 
-    setLayout(mainWindowLayout);
+    setLayout(MainWindowLayout);
 
     //setup connect
-    connect(exitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
-    connect(startNewGameButton, SIGNAL(clicked()), this, SLOT(startNewGame()));
-    connect(rightWidget, SIGNAL(gameEnded(int)), this, SLOT(refreshBoard(int)));
+    connect(ExitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
+    connect(StartNewGameButton, SIGNAL(clicked()), this, SLOT(startNewGame()));
+    connect(Chessboard, SIGNAL(gameEnded(int)), this, SLOT(refreshBoard(int)));
     return;
 }
 
@@ -48,6 +48,6 @@ void mainWidget::startNewGame()
 }
 void mainWidget::refreshBoard(int opt)
 {
-    rightWidget -> reset();
+    Chessboard -> reset();
     return;
 }
