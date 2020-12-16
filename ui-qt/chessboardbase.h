@@ -14,11 +14,13 @@ class chessboardBase : public QWidget
 {
     Q_OBJECT
 public:
-    explicit chessboardBase(QWidget *parent = nullptr, int size = 50);
+    explicit chessboardBase(QWidget *parent = nullptr, int size = 50,int show_msg = 1);
     void reset();
     int getTurncnt(){return BoardData -> getTurncnt();}
 
 private:
+    int SHOW_MSG;
+
     nogochessboard *BoardData;
     QPushButton *BoardButton[9][9];
     QGridLayout *BoardLayout;

@@ -14,17 +14,18 @@ class nogochessboard : public QWidget
 {
     Q_OBJECT
 public:
-    nogochessboard(QWidget *parent = nullptr);
+    nogochessboard(QWidget *parent = nullptr,int show_msg = 1);
 
     int getTurncnt() {return Turncnt;}
 
     void reset();
-    int check(int x, int y, int show_msg = 1);//返回值：0 不合法；1 合法；-1 合法但出现气为 0
+    int check(int x, int y);//返回值：0 不合法；1 合法；-1 合法但出现气为 0
     void place(int x, int y);
     void undo();
     std::vector<int> getBoard(int show_turn = -1);
 
 private:
+    int SHOW_MSG;
     const int Fx[4] = {-1, 0, 1, 0};
     const int Fy[4] = {0, 1, 0, -1};
     disjointSetUnion *dsu;//并查集维护气

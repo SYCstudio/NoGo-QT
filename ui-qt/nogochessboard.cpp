@@ -1,7 +1,8 @@
 #include "nogochessboard.h"
 
-nogochessboard::nogochessboard(QWidget *parent) : QWidget(parent)
+nogochessboard::nogochessboard(QWidget *parent,int show_msg) : QWidget(parent)
 {
+    SHOW_MSG = show_msg;
     memset(Air, 0, sizeof(Air));
     memset(PlaceX, 0, sizeof(PlaceX));
     memset(PlaceY, 0, sizeof(PlaceY));
@@ -25,19 +26,19 @@ void nogochessboard::reset() {
     return;
 }
 
-int nogochessboard::check(int x, int y, int show_msg) {
+int nogochessboard::check(int x, int y) {
     //边界判断
     if (outBd(x, y)) {
-        if (show_msg) QMessageBox::warning(this, tr("Warning!"), tr("Invalid position!"), QMessageBox::Ok);
+        if (SHOW_MSG) QMessageBox::warning(this, tr("Warning!"), tr("Invalid position!"), QMessageBox::Ok);
         return 0;
     }
     if (BoardStatus[id(x, y)] != -1) {
-        if (show_msg) QMessageBox::warning(this, tr("Warning!"), tr("This position has been filled."), QMessageBox::Ok);
+        if (SHOW_MSG) QMessageBox::warning(this, tr("Warning!"), tr("This position has been filled."), QMessageBox::Ok);
         return 0;
     }
     //先手不能先放在中间位置
     if (Turncnt == 0 && x == 4 && y == 4) {
-        if (show_msg) QMessageBox::warning(this, tr("Warning!"), tr("You cannot select the middle position at the first step."), QMessageBox::Ok);
+        if (SHOW_MSG) QMessageBox::warning(this, tr("Warning!"), tr("You cannot select the middle position at the first step."), QMessageBox::Ok);
         return 0;
     }
 
@@ -72,7 +73,7 @@ int nogochessboard::check(int x, int y, int show_msg) {
 }
 
 void nogochessboard::place(int x, int y) {
-    int check_ret = check(x, y, 0);
+    int check_ret = check(x, y);
     if (check_ret == 0) return;
 
     //回合数增加

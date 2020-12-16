@@ -1,7 +1,8 @@
 #include "chessboardbase.h"
 
-chessboardBase::chessboardBase(QWidget *parent,int size) : QWidget(parent)
+chessboardBase::chessboardBase(QWidget *parent,int size,int show_msg) : QWidget(parent)
 {
+    SHOW_MSG = show_msg;
     //initialize buttons and labels
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++) {
@@ -16,7 +17,7 @@ chessboardBase::chessboardBase(QWidget *parent,int size) : QWidget(parent)
     setLayout(BoardLayout);
 
     //initialize boarddata
-    BoardData = new nogochessboard();
+    BoardData = new nogochessboard(nullptr, SHOW_MSG);
 
     //initialize connect
     //连接按钮触发与内联棋盘数据
