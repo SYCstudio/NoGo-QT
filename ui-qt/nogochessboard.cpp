@@ -90,7 +90,7 @@ void nogochessboard::place(int x, int y) {
     TopPositionRecord[Turncnt] = dsu -> getStacktop();//并查集回溯准备
     for (int f = 0; f < 4; f++) {//原始信息记录
         int xx = x + Fx[f], yy = y + Fy[f];
-        if (outBd(xx, yy) || BoardStatus[id(xx, yy)] == -1) continue;
+        if (outBd(xx, yy)) continue;
         AirRec[Turncnt][f] = Air[dsu -> getfa(id(xx, yy))];
         AncRec[Turncnt][f] = dsu -> getfa(id(xx, yy));
     }
@@ -122,10 +122,15 @@ void nogochessboard::place(int x, int y) {
 }
 
 void nogochessboard::undo() {
+    qDebug() << "UNDO!" << Turncnt;
     if (Turncnt == 0) return;
     int x = PlaceX[Turncnt], y = PlaceY[Turncnt];
     dsu -> undo(TopPositionRecord[Turncnt]);
-    for (int f = 0; f < 4; f++) Air[AncRec[Turncnt][f]] = AirRec[Turncnt][f];
+    for (int f = 0; f < 4; f++) {
+        int xx = x + Fx[f], yy = y + Fy[f];
+        if (outBd(xx, yy)) continue;
+        Air[AncRec[Turncnt][f]] = AirRec[Turncnt][f];
+    }
     BoardStatus[id(x, y)] = -1;
 
     turncntMinus();

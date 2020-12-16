@@ -78,3 +78,9 @@ void chessboardBase::clickTrans(int xy) {
     repaintBoard();
     return;
 }
+
+void chessboardBase::undo_buf() {
+    BoardData -> undo();
+    repaintBoard();
+    return;
+}

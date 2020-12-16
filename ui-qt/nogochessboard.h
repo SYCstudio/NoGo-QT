@@ -21,7 +21,6 @@ public:
     void reset();
     int check(int x, int y);//返回值：0 不合法；1 合法；-1 合法但出现气为 0
     void place(int x, int y);
-    void undo();
     std::vector<int> getBoard(int show_turn = -1);
 
 private:
@@ -48,6 +47,9 @@ private:
 signals:
     void gameEnded(int winner);//0-white,1-black
     void turncntChanged();
+
+public slots:
+    void undo();
 };
 
 #endif // NOGOCHESSBOARD_H

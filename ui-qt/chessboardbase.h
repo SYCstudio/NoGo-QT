@@ -33,6 +33,7 @@ signals:
 public slots:
     void clickTrans(int xy);//将 xy 转化为 (x,y) 传递给 BoardData -> place
     void repaintBoard(int turn = -1);
+    void undo_buf();
 };
 
 #endif // CHESSBOARDBASE_H

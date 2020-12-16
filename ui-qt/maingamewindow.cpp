@@ -14,6 +14,10 @@ mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
     SaveButton = new QPushButton();
     SaveButton -> setText(tr("Save"));
 
+    UndoButton = new QPushButton();
+    UndoButton -> setText(tr("Undo"));
+    UndoButton -> setEnabled(0);
+
     QuitButton = new QPushButton();
     QuitButton -> setText(tr("Quit"));
 
@@ -32,7 +36,8 @@ mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
     RightLayout -> addWidget(TurnPrompt, 2, 1);
     RightLayout -> addWidget(TurnShow, 2, 2);
     RightLayout -> addWidget(SaveButton, 3, 1, 1, 2);
-    RightLayout -> addWidget(QuitButton, 4, 1, 1, 2);
+    RightLayout -> addWidget(UndoButton, 4, 1, 1, 2);
+    RightLayout -> addWidget(QuitButton, 5, 1, 1, 2);
 
     BottomLayout = new QHBoxLayout();
     BottomLayout -> setSpacing(0);
@@ -49,11 +54,13 @@ mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
     connect(QuitButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ChessBoard, SIGNAL(turncntChanged()), this, SLOT(turncntChanged()));
     connect(ChessBoard, SIGNAL(gameEnded(int)), this, SLOT(gameEnded(int)));
+    connect(UndoButton, SIGNAL(clicked()), ChessBoard, SLOT(undo_buf()));
 
     QSignalMapper *historyMapper = new QSignalMapper();
     for (int i = 0; i < 81; i++) connect(HistoryButtons[i], SIGNAL(clicked()), historyMapper, SLOT(map()));
     for (int i = 0; i < 81; i++) historyMapper -> setMapping(HistoryButtons[i], i+1);
     connect(historyMapper, SIGNAL(mapped(int)), ChessBoard, SLOT(repaintBoard(int)));
+    connect(historyMapper, SIGNAL(mapped(int)), this, SLOT(changeNowDisplayPointer(int)));
     //*/
 
     return;
@@ -70,6 +77,14 @@ void mainGameWindow::gameEnded(int opt)
 
 void mainGameWindow::turncntChanged()
 {
+    changeNowDisplayPointer(ChessBoard -> getTurncnt());
     for (int i = 0; i < 81; i++) HistoryButtons[i] -> setEnabled(i < ChessBoard -> getTurncnt());
+    return;
+}
+
+void mainGameWindow::changeNowDisplayPointer(int p)
+{
+    qDebug() << "changePointer" << p << ChessBoard -> getTurncnt();
+    UndoButton -> setEnabled(p && p == ChessBoard -> getTurncnt());
     return;
 }
