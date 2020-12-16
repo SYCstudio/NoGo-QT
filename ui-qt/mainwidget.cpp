@@ -41,9 +41,13 @@ mainWidget::~mainWidget()
 
 void mainWidget::startNewGame()
 {
+    playerselecter *selecter = new playerselecter();
+    int ret = selecter -> exec();
+    qDebug() << ret;
+    if (ret == -1) return;
+
     mainGameWindow *newgame = new mainGameWindow();
     newgame -> show();
-    //delete newgame;
     return;
 }
 void mainWidget::refreshBoard(int opt)

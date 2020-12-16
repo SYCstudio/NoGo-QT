@@ -11,6 +11,7 @@
 #include <QDebug>
 #include "maingamewindow.h"
 #include "chessboardbase.h"
+#include "playerselecter.h"
 
 class mainWidget : public QWidget
 {

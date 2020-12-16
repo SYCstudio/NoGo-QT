@@ -23,14 +23,16 @@ SOURCES += \
     main.cpp \
     maingamewindow.cpp \
     mainwidget.cpp \
-    nogochessboard.cpp
+    nogochessboard.cpp \
+    playerselecter.cpp
 
 HEADERS += \
     chessboardbase.h \
     disjointsetunion.h \
     maingamewindow.h \
     mainwidget.h \
-    nogochessboard.h
+    nogochessboard.h \
+    playerselecter.h
 
 TRANSLATIONS += \
     ui-qt_en_GB.ts
