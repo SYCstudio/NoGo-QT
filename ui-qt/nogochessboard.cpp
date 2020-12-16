@@ -21,6 +21,7 @@ void nogochessboard::reset() {
     memset(BoardStatus, -1, sizeof(BoardStatus));
     memset(TopPositionRecord, 0, sizeof(TopPositionRecord));
     Turncnt = 0;
+    delete dsu;
     dsu = new disjointSetUnion(81);
     is_game_end = 0;
     return;
