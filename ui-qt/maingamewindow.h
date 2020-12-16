@@ -17,23 +17,21 @@ class mainGameWindow : public QWidget
 public:
     explicit mainGameWindow(QWidget *parent = nullptr);
 private:
-    chessboardBase * chessBoard;
-    QLabel *timePrompt;
-    QLabel *timeShow;
-    QLabel *turnPrompt;
-    QLabel *turnShow;
-    QPushButton *saveButton;
-    QPushButton *quitButton;
-    QPushButton *historyButtons[81];
-    QGridLayout *mainLayout;
-    QGridLayout *rightLayout;
-    QHBoxLayout *bottomLayout;
+    chessboardBase * ChessBoard;
+    QLabel *TimePrompt;
+    QLabel *TimeShow;
+    QLabel *TurnPrompt;
+    QLabel *TurnShow;
+    QPushButton *SaveButton;
+    QPushButton *QuitButton;
+    QPushButton *HistoryButtons[81];
+    QGridLayout *MainLayout;
+    QGridLayout *RightLayout;
+    QHBoxLayout *BottomLayout;
 
 private slots:
+    void gameEnded(int winner);
     void turncntChanged();
-    void gameEnd(int opt);
-    void nowpointChanged();
-
 };
 
 #endif // MAINGAMEWINDOW_H

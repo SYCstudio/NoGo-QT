@@ -2,187 +2,78 @@
 
 chessboardBase::chessboardBase(QWidget *parent,int size) : QWidget(parent)
 {
-    memset(clickX,0,sizeof(clickX));
-    memset(clickY,0,sizeof(clickY));
-    nowpoint = 0;
-    memset(boardStatus, -1, sizeof(boardStatus));
-    turncnt = 0;
-    isDisableGrid = 0;
-
     //initialize buttons and labels
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++) {
-            boardButton[i][j] = new QPushButton();
-            boardButton[i][j] -> setFixedSize(size, size);
+            BoardButton[i][j] = new QPushButton();
+            BoardButton[i][j] -> setFixedSize(size, size);
         }
 
     //initialize layout;
-    boardLayout = new QGridLayout();
-    boardLayout -> setSpacing(0);
-    for (int i = 0; i < 9; i++) for (int j = 0; j < 9; j++) boardLayout -> addWidget(boardButton[i][j], i, j);
-    setLayout(boardLayout);
+    BoardLayout = new QGridLayout();
+    BoardLayout -> setSpacing(0);
+    for (int i = 0; i < 9; i++) for (int j = 0; j < 9; j++) BoardLayout -> addWidget(BoardButton[i][j], i, j);
+    setLayout(BoardLayout);
+
+    //initialize boarddata
+    BoardData = new nogochessboard();
 
     //initialize connect
-    //qDebug() << "A";
+    //连接按钮触发与内联棋盘数据
     QSignalMapper *mapForBoard = new QSignalMapper();
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++)
-            connect(boardButton[i][j], SIGNAL(clicked()), mapForBoard, SLOT(map()));
+            connect(BoardButton[i][j], SIGNAL(clicked()), mapForBoard, SLOT(map()));
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++)
-            mapForBoard -> setMapping(boardButton[i][j], i*9+j);
-    connect(mapForBoard, SIGNAL(mapped(int)), this, SLOT(click(int)));
+            mapForBoard -> setMapping(BoardButton[i][j], i*9+j);
+    connect(mapForBoard, SIGNAL(mapped(int)), this, SLOT(clickTrans(int)));
 
-    dsu = new disjointSetUnion(81);
-
+    connect(BoardData, SIGNAL(gameEnded(int)), this, SIGNAL(gameEnded(int)));
+    connect(BoardData, SIGNAL(turncntChanged()), this, SIGNAL(turncntChanged()));
     return;
 }
 
-int chessboardBase::check(int x, int y, int opt)
-{
-    if (outBd(x, y)) {
-        if (opt) QMessageBox::warning(this, tr("Warning!"), tr("Invalid position!"), QMessageBox::Ok);
-        return false;
-    }
-    if (boardStatus[x][y] != -1) {
-        if (opt) QMessageBox::warning(this, tr("Warning!"), tr("This position has been filled."), QMessageBox::Ok);
-        return false;
-    }
-    if (turncnt == 0 && x == 4 && y == 4) {
-        if (opt) QMessageBox::warning(this, tr("Warning!"), tr("You cannot select the middle position at first step."), QMessageBox::Ok);
-        return false;
-    }
-
-    int air = 0, flag = 1, col = turncnt & 1;
-    for (int f = 0; f < 4; f++) {
-        int xx = x + Fx[f], yy = y + Fy[f];
-        if (outBd(xx, yy)) continue;
-        if (boardStatus[xx][yy] == -1) ++air;
-        else if (boardStatus[xx][yy] == col) {
-            int anc = dsu -> getfa(id(xx, yy));
-            air += (Mark[anc] ^ 1) * Air[anc] - 1;
-            Mark[anc] = 1;
-        }
-        else if (boardStatus[xx][yy] == (col ^ 1)) {
-            --Air[dsu -> getfa(id(xx, yy))];
-            if (Air[dsu -> getfa(id(xx, yy))] == 0) flag = 0;
-        }
-    }
-    for (int f = 0; f < 4; f++) {
-        int xx = x + Fx[f], yy = y + Fy[f];
-        if (outBd(xx, yy)) continue;
-        if (boardStatus[xx][yy] == (col ^ 1)) ++Air[dsu -> getfa(id(xx, yy))];
-        else if (boardStatus[xx][yy] == col) Mark[dsu -> getfa(id(xx, yy))] = 0;
-    }
-    qDebug() << air << flag;
-    if (air * flag == 0) return -1;
-    return 1;
-}
-
-void chessboardBase::disableAllGrid()
-{
-    isDisableGrid = 1;
+void chessboardBase::reset() {
+    //initialize buttons and labels
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++) {
-            //qDebug() << boardButton[i][j] -> isEnabled();
-            boardButton[i][j] -> setEnabled(0);
+            BoardButton[i][j] -> setStyleSheet("");
         }
+
+    //initialize boarddata
+    BoardData -> reset();
+    repaintBoard();
     return;
 }
 
-void chessboardBase::restoreAllGrid()
-{
-    if (isDisableGrid == 0) return;
+void chessboardBase::setDisable() {
     for (int i = 0; i < 9; i++)
-        for (int j = 0; j < 9; j++)
-            boardButton[i][j] -> setEnabled(boardStatus[i][j] == -1);
-    isDisableGrid = 0;
-    return;
-}
-
-void chessboardBase::click(int xy, int opt)
-{
-    //qDebug() << xy << opt;
-    disableAllGrid();
-    int x = xy / 9, y = xy % 9;
-    if (x == -1 && y == -1) {
-        restoreAllGrid(); return;
-    }
-    //qDebug() << x << y ;
-    int checkRet = check(x, y, opt);
-    if (checkRet == 0) {
-        restoreAllGrid();
-        return;
-    }
-
-    restoreAllGrid();
-    int col = turncnt & 1;
-
-    boardButton[x][y] -> setEnabled(0);
-    boardStatus[x][y] = col;
-
-    for (int f = 0; f < 4; f++) {
-        int xx = x + Fx[f], yy = y + Fy[f];
-        if (outBd(xx, yy) || boardStatus[xx][yy] == -1) continue;
-        --Air[dsu -> getfa(id(xx, yy))];
-    }
-    int air = 0, finalanc = id(x, y);
-    for (int f = 0; f < 4; f++) {
-        int xx = x + Fx[f], yy = y + Fy[f];
-        if (outBd(xx, yy) || boardStatus[xx][yy] == (col ^ 1)) continue;
-        if (boardStatus[xx][yy] == -1) {
-            ++air; continue;
+        for (int j = 0; j < 9; j++) {
+            BoardButton[i][j] -> setEnabled(0);
+            BoardButton[i][j] -> setStyleSheet("");
         }
-        int anc = dsu -> getfa(id(xx, yy));
-        if (anc == finalanc) continue;
-        air += Air[anc];
-        finalanc = dsu -> merge(anc,finalanc);
-    }
-    Air[finalanc] = air;
-
-    turncntPlus();
-    if (col) boardButton[x][y] -> setStyleSheet("background-color: black");
-    else boardButton[x][y] -> setStyleSheet("background-color:white");
-    clickX[turncnt] = x;
-    clickY[turncnt] = y;
-
-    qDebug() << checkRet ;
-    if (checkRet == -1) {
-        emit gameEnd(turncnt & 1);
-    }
     return;
 }
 
-void chessboardBase::turncntPlus()
-{
-    //qDebug() << "get-in turncntPlus";
-    ++turncnt;changeNowpoint(turncnt);
-    emit turncntChanged();
-}
-
-void chessboardBase::changeNowpoint(int crt)
-{
-    nowpoint = crt;
-    emit nowpointChanged();
-    if (nowpoint != turncnt) disableAllGrid();
-    if (nowpoint == turncnt) restoreAllGrid();
+void chessboardBase::repaintBoard(int turn) {
+    setDisable();
+    if (turn == -1) turn = BoardData -> getTurncnt();
+    //qDebug() << turn;
+    std::vector<int> Bd = BoardData -> getBoard(turn);
+    for (int i = 0; i < 9; i++)
+        for (int j = 0; j < 9; j++) {
+            int col = Bd[i * 9 + j];
+            if (col == 0) BoardButton[i][j] -> setStyleSheet("background-color: white");
+            if (col == 1) BoardButton[i][j] -> setStyleSheet("background-color: black");
+        }
+    for (int i = 0; i < 9; i++) for (int j = 0; j < 9; j++) BoardButton[i][j] -> setEnabled(turn == BoardData -> getTurncnt());
     return;
 }
 
-void chessboardBase::backTo(int round)
-{
-    qDebug() << "back to:"<<round;
-    if (round > turncnt || round < 0) return;
-    if (nowpoint < round) {
-        for (int i = nowpoint + 1; i <= round; i++)
-            if (i & 1) boardButton[clickX[i]][clickY[i]] -> setStyleSheet("background-color: white");
-            else boardButton[clickX[i]][clickY[i]] -> setStyleSheet("background-color: black");
-    }
-    else {
-        for (int i = round + 1; i <= nowpoint; i++) boardButton[clickX[i]][clickY[i]] -> setStyleSheet("");
-    }
-
-    changeNowpoint(round);
-    qDebug() << turncnt << nowpoint << isDisableGrid ;
+void chessboardBase::clickTrans(int xy) {
+    setDisable();
+    BoardData -> place(xy / 9, xy % 9);
+    repaintBoard();
     return;
 }

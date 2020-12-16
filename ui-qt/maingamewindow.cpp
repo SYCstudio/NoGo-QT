@@ -3,77 +3,73 @@
 mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
 {
     //initialize labels and buttons.
-    timePrompt = new QLabel();
-    timeShow = new QLabel();
-    timePrompt -> setText(tr("Time:"));
+    TimePrompt = new QLabel();
+    TimeShow = new QLabel();
+    TimePrompt -> setText(tr("Time:"));
 
-    turnPrompt = new QLabel();
-    turnShow = new QLabel();
-    turnPrompt -> setText(tr("Turn:"));
+    TurnPrompt = new QLabel();
+    TurnShow = new QLabel();
+    TurnPrompt -> setText(tr("Turn:"));
 
-    saveButton = new QPushButton();
-    saveButton -> setText(tr("Save"));
+    SaveButton = new QPushButton();
+    SaveButton -> setText(tr("Save"));
 
-    quitButton = new QPushButton();
-    quitButton -> setText(tr("Quit"));
+    QuitButton = new QPushButton();
+    QuitButton -> setText(tr("Quit"));
 
     for (int i = 0; i < 81; i++) {
-        historyButtons[i] = new QPushButton();
-        historyButtons[i] -> setFixedSize(10,50);
-        historyButtons[i] -> setEnabled(0);
+        HistoryButtons[i] = new QPushButton();
+        HistoryButtons[i] -> setFixedSize(10,50);
+        HistoryButtons[i] -> setEnabled(0);
     }
 
-    chessBoard = new chessboardBase();
+    ChessBoard = new chessboardBase();
 
     //initialize layout
-    rightLayout = new QGridLayout();
-    rightLayout -> addWidget(timePrompt, 1, 1);
-    rightLayout -> addWidget(timeShow, 1, 2);
-    rightLayout -> addWidget(turnPrompt, 2, 1);
-    rightLayout -> addWidget(turnShow, 2, 2);
-    rightLayout -> addWidget(saveButton, 3, 1, 1, 2);
-    rightLayout -> addWidget(quitButton, 4, 1, 1, 2);
+    RightLayout = new QGridLayout();
+    RightLayout -> addWidget(TimePrompt, 1, 1);
+    RightLayout -> addWidget(TimeShow, 1, 2);
+    RightLayout -> addWidget(TurnPrompt, 2, 1);
+    RightLayout -> addWidget(TurnShow, 2, 2);
+    RightLayout -> addWidget(SaveButton, 3, 1, 1, 2);
+    RightLayout -> addWidget(QuitButton, 4, 1, 1, 2);
 
-    bottomLayout = new QHBoxLayout();
-    bottomLayout -> setSpacing(0);
-    for (int i = 0; i < 81; i++) bottomLayout -> addWidget(historyButtons[i]);
+    BottomLayout = new QHBoxLayout();
+    BottomLayout -> setSpacing(0);
+    for (int i = 0; i < 81; i++) BottomLayout -> addWidget(HistoryButtons[i]);
 
-    mainLayout = new QGridLayout();
-    mainLayout -> addWidget(chessBoard, 1, 1);
-    mainLayout -> addLayout(rightLayout, 1, 2);
-    mainLayout -> addLayout(bottomLayout, 2, 1, 1, 2);
+    MainLayout = new QGridLayout();
+    MainLayout -> addWidget(ChessBoard, 1, 1);
+    MainLayout -> addLayout(RightLayout, 1, 2);
+    MainLayout -> addLayout(BottomLayout, 2, 1, 1, 2);
 
-    setLayout(mainLayout);
+    setLayout(MainLayout);
 
     //setup connect
-    connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
-    connect(chessBoard, SIGNAL(turncntChanged()), this, SLOT(turncntChanged()));
-    connect(chessBoard, SIGNAL(gameEnd(int)), this, SLOT(gameEnd(int)));
+    connect(QuitButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ChessBoard, SIGNAL(turncntChanged()), this, SLOT(turncntChanged()));
+    connect(ChessBoard, SIGNAL(gameEnded(int)), this, SLOT(gameEnded(int)));
 
     QSignalMapper *historyMapper = new QSignalMapper();
-    for (int i = 0; i < 81; i++) connect(historyButtons[i], SIGNAL(clicked()), historyMapper, SLOT(map()));
-    for (int i = 0; i < 81; i++) historyMapper -> setMapping(historyButtons[i], i+1);
-    connect(historyMapper, SIGNAL(mapped(int)), chessBoard, SLOT(backTo(int)));
+    for (int i = 0; i < 81; i++) connect(HistoryButtons[i], SIGNAL(clicked()), historyMapper, SLOT(map()));
+    for (int i = 0; i < 81; i++) historyMapper -> setMapping(HistoryButtons[i], i+1);
+    connect(historyMapper, SIGNAL(mapped(int)), ChessBoard, SLOT(repaintBoard(int)));
+    //*/
 
     return;
 }
 
-void mainGameWindow::turncntChanged()
+void mainGameWindow::gameEnded(int opt)
 {
-    //qDebug() << "get-in turnShowRefresh";
-    turnShow -> setText(QString("%1").arg(chessBoard -> getTurncnt()));
-    historyButtons[chessBoard -> getTurncnt() - 1] -> setEnabled(1);
-    //turnPrompt -> setText(QString("%1").arg(chessBoard -> getTurncnt()));
-    return;
-}
-void mainGameWindow::gameEnd(int opt)
-{
+    ChessBoard -> repaintBoard();
     QString buf(tr("The game is end.\nThe winner is "));
     buf += opt? tr("black") : tr("white");
     QMessageBox::information(this, tr("end."), buf, QMessageBox::Ok);
     close();
 }
 
-void mainGameWindow::nowpointChanged()
+void mainGameWindow::turncntChanged()
 {
+    for (int i = 0; i < 81; i++) HistoryButtons[i] -> setEnabled(i < ChessBoard -> getTurncnt());
+    return;
 }
