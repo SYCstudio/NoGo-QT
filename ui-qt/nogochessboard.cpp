@@ -122,7 +122,7 @@ void nogochessboard::place(int x, int y) {
 }
 
 void nogochessboard::undo() {
-    qDebug() << "UNDO!" << Turncnt;
+    //qDebug() << "UNDO!" << Turncnt;
     if (Turncnt == 0) return;
     int x = PlaceX[Turncnt], y = PlaceY[Turncnt];
     dsu -> undo(TopPositionRecord[Turncnt]);

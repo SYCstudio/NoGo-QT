@@ -79,12 +79,13 @@ void mainGameWindow::turncntChanged()
 {
     changeNowDisplayPointer(ChessBoard -> getTurncnt());
     for (int i = 0; i < 81; i++) HistoryButtons[i] -> setEnabled(i < ChessBoard -> getTurncnt());
+    TurnShow -> setText(QString::number(ChessBoard -> getTurncnt()));
     return;
 }
 
 void mainGameWindow::changeNowDisplayPointer(int p)
 {
-    qDebug() << "changePointer" << p << ChessBoard -> getTurncnt();
+    //qDebug() << "changePointer" << p << ChessBoard -> getTurncnt();
     UndoButton -> setEnabled(p && p == ChessBoard -> getTurncnt());
     return;
 }
