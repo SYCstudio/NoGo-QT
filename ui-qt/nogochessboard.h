@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QWidget>
+#include <QFile>
+#include <QTextStream>
 #include <vector>
 #include <cstring>
 #include <stack>
@@ -23,6 +25,7 @@ public:
     void place(int x, int y,int show_msg = -1);
     std::vector<int> getBoard(int show_turn = -1);
     int isGameEnded(){return is_game_end;}
+    void SaveData(QString filename);
 
 private:
     int SHOW_MSG;

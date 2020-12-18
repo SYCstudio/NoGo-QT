@@ -50,6 +50,7 @@ void ioInteractor::startGame()
 
 void ioInteractor::aiMove() {
     if ((Game -> getTurncnt() & 1) == AI_ID) return;
+    if (Player[0] == 0 && Player[1] == 0) return;
     std::pair<int, int> ret = AI::AI(Game -> getBoard());
     while (Game -> check(ret.first, ret.second, 0) == 0) ret = AI::AI(Game -> getBoard());
     //qDebug() << ret.first << ret.second;

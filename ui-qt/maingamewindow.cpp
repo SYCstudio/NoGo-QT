@@ -56,6 +56,7 @@ mainGameWindow::mainGameWindow(QWidget *parent,int show_msg) : QWidget(parent)
     connect(ChessBoard, SIGNAL(gameEnded(int)), this, SLOT(gameEnded(int)));
     connect(UndoButton, SIGNAL(clicked()), ChessBoard, SLOT(undo_buf()));
     connect(ChessBoard, SIGNAL(anyGridClicked()), this, SIGNAL(anyGridClicked()));
+    connect(SaveButton, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
 
     QSignalMapper *historyMapper = new QSignalMapper();
     for (int i = 0; i < 81; i++) connect(HistoryButtons[i], SIGNAL(clicked()), historyMapper, SLOT(map()));
@@ -93,5 +94,11 @@ void mainGameWindow::changeNowDisplayPointer(int p)
 {
     //qDebug() << "changePointer" << p << ChessBoard -> getTurncnt();
     UndoButton -> setEnabled(p && p == ChessBoard -> getTurncnt());
+    return;
+}
+
+void mainGameWindow::saveButtonClicked() {
+    QString filename = QFileDialog::getSaveFileName(this, tr("Choose filename"), "", tr("Data(*.dat"));
+    if (!filename.isNull()) ChessBoard -> SaveData(filename);
     return;
 }

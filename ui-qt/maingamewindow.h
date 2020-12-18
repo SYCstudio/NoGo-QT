@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include <QString>
 #include <QSignalMapper>
+#include <QFileDialog>
 #include "chessboardbase.h"
 
 class mainGameWindow : public QWidget
@@ -44,6 +45,7 @@ private slots:
     void gameEnded(int winner);
     void turncntChanged();
     void changeNowDisplayPointer(int p);
+    void saveButtonClicked();
 };
 
 #endif // MAINGAMEWINDOW_H

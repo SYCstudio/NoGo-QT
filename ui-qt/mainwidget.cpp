@@ -32,6 +32,7 @@ mainWidget::mainWidget(QWidget *parent)
     connect(ExitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
     connect(StartNewGameButton, SIGNAL(clicked()), this, SLOT(startNewGame()));
     connect(Chessboard, SIGNAL(gameEnded(int)), this, SLOT(refreshBoard(int)));
+    connect(LoadExistsGameButton, SIGNAL(clicked()), this, SLOT(getSaved()));
     return;
 }
 
@@ -51,8 +52,16 @@ void mainWidget::startNewGame()
     qDebug() << "PORT" ;
     return;
 }
+
 void mainWidget::refreshBoard(int opt)
 {
     Chessboard -> reset();
+    return;
+}
+
+void mainWidget::getSaved() {
+    QString filename = QFileDialog::getOpenFileName(this, tr("choose a data file"), "", tr("Data(*.dat)"));
+    if (filename.isNull()) return;
+    qDebug() << filename ;
     return;
 }

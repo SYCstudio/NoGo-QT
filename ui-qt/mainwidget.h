@@ -9,6 +9,8 @@
 #include <QVBoxLayout>
 #include <QApplication>
 #include <QDebug>
+#include <QFileInfo>
+#include <QFileDialog>
 #include "maingamewindow.h"
 #include "chessboardbase.h"
 #include "playerselecter.h"
@@ -34,5 +36,6 @@ private:
 private slots:
     void startNewGame();
     void refreshBoard(int opt);
+    void getSaved();
 };
 #endif // MAINWIDGET_H
