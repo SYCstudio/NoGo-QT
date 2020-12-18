@@ -18,8 +18,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ai.cpp \
     chessboardbase.cpp \
     disjointsetunion.cpp \
+    iointeractor.cpp \
     main.cpp \
     maingamewindow.cpp \
     mainwidget.cpp \
@@ -27,8 +29,10 @@ SOURCES += \
     playerselecter.cpp
 
 HEADERS += \
+    ai.h \
     chessboardbase.h \
     disjointsetunion.h \
+    iointeractor.h \
     maingamewindow.h \
     mainwidget.h \
     nogochessboard.h \

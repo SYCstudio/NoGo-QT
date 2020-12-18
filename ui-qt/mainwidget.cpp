@@ -43,11 +43,12 @@ void mainWidget::startNewGame()
 {
     playerselecter *selecter = new playerselecter();
     int ret = selecter -> exec();
-    qDebug() << ret;
+    //qDebug() << ret;
+    delete selecter;
     if (ret == -1) return;
-
-    mainGameWindow *newgame = new mainGameWindow();
-    newgame -> show();
+    ioInteractor * Port = new ioInteractor(ret);
+    Port -> startGame();
+    qDebug() << "PORT" ;
     return;
 }
 void mainWidget::refreshBoard(int opt)

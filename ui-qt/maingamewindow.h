@@ -15,7 +15,15 @@ class mainGameWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit mainGameWindow(QWidget *parent = nullptr);
+    explicit mainGameWindow(QWidget *parent = nullptr,int show_msg = 1);
+    void setDisable();
+    int getTurncnt(){return ChessBoard -> getTurncnt();}
+    int isGameEnded(){return ChessBoard -> isGameEnded();}
+    void rePaintBoard(){ChessBoard -> repaintBoard();}
+    std::vector<int> getBoard(){return ChessBoard -> getBoard();}
+    int check(int x, int y, int show_msg = -1){return ChessBoard -> check(x, y, show_msg);}
+    void place(int x, int y,int show_msg = -1){ChessBoard -> place(x, y, show_msg);}
+
 private:
     int NowDisplayPointer;//当前显示的棋盘是第几回合
     chessboardBase * ChessBoard;
@@ -30,7 +38,8 @@ private:
     QGridLayout *MainLayout;
     QGridLayout *RightLayout;
     QHBoxLayout *BottomLayout;
-
+signals:
+    void anyGridClicked();
 private slots:
     void gameEnded(int winner);
     void turncntChanged();
