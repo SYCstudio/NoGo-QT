@@ -7,12 +7,13 @@ mainWidget::mainWidget(QWidget *parent)
     StartNewGameButton = new QPushButton();
     LoadExistsGameButton = new QPushButton();
     ExitButton = new QPushButton();
+    LanguageButton = new QPushButton();
     LogoWidget = new QWidget();
     Chessboard = new chessboardBase(nullptr, 20, 0);
 
-    StartNewGameButton -> setText(tr("New game"));
-    LoadExistsGameButton -> setText(tr("Load"));
-    ExitButton -> setText(tr("Exit"));
+    setLabel();
+
+    language = new QTranslator();
 
     //initialzize layout
     MainWindowLayout = new QGridLayout();
@@ -20,6 +21,7 @@ mainWidget::mainWidget(QWidget *parent)
 
     LeftButtonLayout -> addWidget(StartNewGameButton);
     LeftButtonLayout -> addWidget(LoadExistsGameButton);
+    LeftButtonLayout -> addWidget(LanguageButton);
     LeftButtonLayout -> addWidget(ExitButton);
 
     MainWindowLayout -> addWidget(LogoWidget, 1, 1, 1, 2);
@@ -33,6 +35,8 @@ mainWidget::mainWidget(QWidget *parent)
     connect(StartNewGameButton, SIGNAL(clicked()), this, SLOT(startNewGame()));
     connect(Chessboard, SIGNAL(gameEnded(int)), this, SLOT(refreshBoard(int)));
     connect(LoadExistsGameButton, SIGNAL(clicked()), this, SLOT(getSaved()));
+    connect(LanguageButton, SIGNAL(clicked()), this, SLOT(selectLanguage()));
+
     return;
 }
 
@@ -87,5 +91,36 @@ void mainWidget::getSaved() {
 
     reader.close();
     ioInteractor *Port = new ioInteractor(P1 * 10 + P2, buf);
+    return;
+}
+
+void mainWidget::selectLanguage()
+{
+    languageselector *selector = new languageselector();
+    int ret = selector -> exec();
+    //qDebug() << ret;
+
+    if (ret == -1) return;
+
+    QString languagename;
+    if (ret == 0) languagename = "ui-qt_en_GB";
+    if (ret == 1) languagename = "ui-qt_zh_CN";
+
+    language -> load(languagename);
+    qApp -> installTranslator(language);
+
+    //reset
+    setLabel();
+
+    return;
+}
+
+void mainWidget::setLabel()
+{
+    setWindowTitle(tr("NoGo"));
+    StartNewGameButton -> setText(tr("New game"));
+    LoadExistsGameButton -> setText(tr("Load"));
+    LanguageButton -> setText(tr("Language"));
+    ExitButton -> setText(tr("Exit"));
     return;
 }

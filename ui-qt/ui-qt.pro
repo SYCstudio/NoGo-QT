@@ -22,6 +22,7 @@ SOURCES += \
     chessboardbase.cpp \
     disjointsetunion.cpp \
     iointeractor.cpp \
+    languageselector.cpp \
     main.cpp \
     maingamewindow.cpp \
     mainwidget.cpp \
@@ -33,12 +34,14 @@ HEADERS += \
     chessboardbase.h \
     disjointsetunion.h \
     iointeractor.h \
+    languageselector.h \
     maingamewindow.h \
     mainwidget.h \
     nogochessboard.h \
     playerselecter.h
 
 TRANSLATIONS += \
+    ui-qt_zh_CN.ts \
     ui-qt_en_GB.ts
 
 # Default rules for deployment.

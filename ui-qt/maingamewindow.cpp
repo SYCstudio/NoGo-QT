@@ -78,7 +78,7 @@ void mainGameWindow::gameEnded(int opt)
     ChessBoard -> repaintBoard();
     QString buf(tr("The game is end.\nThe winner is "));
     buf += opt? tr("black") : tr("white");
-    QMessageBox::information(this, tr("end."), buf, QMessageBox::Ok);
+    QMessageBox::information(this, tr("Game End"), buf, QMessageBox::Ok);
     close();
 }
 
