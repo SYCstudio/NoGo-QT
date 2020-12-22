@@ -49,7 +49,7 @@ void mainWidget::startNewGame()
     if (ret == -1) return;
     ioInteractor * Port = new ioInteractor(ret);
     Port -> startGame();
-    qDebug() << "PORT" ;
+    //qDebug() << "PORT" ;
     return;
 }
 
@@ -62,6 +62,30 @@ void mainWidget::refreshBoard(int opt)
 void mainWidget::getSaved() {
     QString filename = QFileDialog::getOpenFileName(this, tr("choose a data file"), "", tr("Data(*.dat)"));
     if (filename.isNull()) return;
-    qDebug() << filename ;
+    //qDebug() << filename ;
+
+    QFile reader(filename);
+    if (!reader.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, tr("Warning!"), tr("Can't open this file."), QMessageBox::Ok);
+        return;
+    }
+
+    QTextStream in(&reader);
+
+    int P1, P2;
+    in >> P1 >> P2;
+
+    mainGameWindow *buf = new mainGameWindow(nullptr, 1);
+
+    int turn;
+    in >> turn;
+    for (int i = 0; i < turn; i++) {
+        int x, y;
+        in >> x >> y;
+        buf -> place(x, y);
+    }
+
+    reader.close();
+    ioInteractor *Port = new ioInteractor(P1 * 10 + P2, buf);
     return;
 }

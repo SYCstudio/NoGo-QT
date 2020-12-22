@@ -15,13 +15,14 @@ class ioInteractor : public QWidget
 {
     Q_OBJECT
 public:
-    ioInteractor(int _Player);
+    ioInteractor(int _Player, mainGameWindow *buf = nullptr);
     void startGame();
 private:
     int Player[2], WINNER, AI_ID;
     mainGameWindow *Game;
 public slots:
     void aiMove();
+    void write(QString filename);
 };
 
 #endif // IOINTERACTOR_H

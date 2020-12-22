@@ -41,6 +41,7 @@ private:
     QHBoxLayout *BottomLayout;
 signals:
     void anyGridClicked();
+    void saveSignal(QString filename);
 private slots:
     void gameEnded(int winner);
     void turncntChanged();

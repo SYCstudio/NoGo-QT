@@ -152,10 +152,12 @@ std::vector<int> nogochessboard::getBoard(int show_turn) {
 
 void nogochessboard::SaveData(QString filename) {
     QFile writef(filename);
-    if (!writef.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    if (!writef.open(QIODevice::ReadWrite | QIODevice::Text)) {
         QMessageBox::warning(this, tr("Warning!"), tr("Can't write data to file."), QMessageBox::Ok);
         return;
     }
+    QByteArray array=writef.readAll();
+    //qDebug () << array;
 
     QTextStream out(&writef);
 

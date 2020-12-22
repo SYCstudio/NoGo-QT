@@ -98,7 +98,10 @@ void mainGameWindow::changeNowDisplayPointer(int p)
 }
 
 void mainGameWindow::saveButtonClicked() {
-    QString filename = QFileDialog::getSaveFileName(this, tr("Choose filename"), "", tr("Data(*.dat"));
-    if (!filename.isNull()) ChessBoard -> SaveData(filename);
+    QString filename = QFileDialog::getSaveFileName(this, tr("Choose filename"), "", tr("Data(*.dat)"));
+    if (!filename.isNull()) {
+        emit saveSignal(filename);
+        ChessBoard -> SaveData(filename);
+    }
     return;
 }
