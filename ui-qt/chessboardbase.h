@@ -19,7 +19,7 @@ public:
     int getTurncnt(){return BoardData -> getTurncnt();}
     void setDisable();
     int isGameEnded(){return BoardData -> isGameEnded();}
-    std::vector<int> getBoard(){return BoardData -> getBoard();}
+    std::vector<std::pair<int, int> > getBoard(){return BoardData -> getBoard();}
     int check(int x, int y,int show_msg = -1){return BoardData -> check(x, y,show_msg);}
     void place(int x, int y,int show_msg = -1){BoardData -> place(x, y, show_msg);}
     void SaveData(QString filename){BoardData -> SaveData(filename);}

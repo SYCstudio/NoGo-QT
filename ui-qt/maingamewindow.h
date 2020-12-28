@@ -21,7 +21,7 @@ public:
     int getTurncnt(){return ChessBoard -> getTurncnt();}
     int isGameEnded(){return ChessBoard -> isGameEnded();}
     void rePaintBoard(){ChessBoard -> repaintBoard();}
-    std::vector<int> getBoard(){return ChessBoard -> getBoard();}
+    std::vector<std::pair<int, int> > getBoard(){return ChessBoard -> getBoard();}
     int check(int x, int y, int show_msg = -1){return ChessBoard -> check(x, y, show_msg);}
     void place(int x, int y,int show_msg = -1){ChessBoard -> place(x, y, show_msg);}
 

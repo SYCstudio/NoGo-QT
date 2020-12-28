@@ -1,5 +1,5 @@
 #include "ai.h"
-std::pair<int, int> AI::AI(std::vector<int> Bd)
+std::pair<int, int> AI::AI(std::vector<std::pair<int, int> > Bd)
 {
     return std::make_pair(rand() % 9, rand() % 9);
 }

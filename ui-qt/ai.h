@@ -9,7 +9,7 @@
 
 namespace AI {
     void INIT();
-    std::pair<int, int> AI(std::vector<int> Bd);
+    std::pair<int, int> AI(std::vector<std::pair<int, int> > Bd);
 }
 
 #endif // AI_H

@@ -140,14 +140,12 @@ void nogochessboard::undo() {
     return;
 }
 
-std::vector<int> nogochessboard::getBoard(int show_turn) {
+std::vector<std::pair<int, int> > nogochessboard::getBoard(int show_turn) {
     if (show_turn == -1) show_turn = Turncnt;
     //qDebug() << "show_turn" << show_turn;
-    std::vector<int> M(81);
-    for (int i = 0; i < 81; i++) M[i] = -1;
-    for (int i = 1; i <= show_turn; i++)
-        M[id(PlaceX[i], PlaceY[i])] = i & 1;
-    return M;
+    std::vector<std::pair<int, int> > R;
+    for (int i = 1; i <= getTurncnt(); i++) R.push_back(std::make_pair(PlaceX[i], PlaceY[i]));
+    return R;
 }
 
 void nogochessboard::SaveData(QString filename) {
