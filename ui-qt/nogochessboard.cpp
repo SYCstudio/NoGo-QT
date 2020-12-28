@@ -75,6 +75,43 @@ int nogochessboard::check(int x, int y, int show_msg) {
     return 1;
 }
 
+int nogochessboard::checkopp(int x, int y) {
+    //边界判断
+    if (outBd(x, y)) return 0;
+    if (BoardStatus[id(x, y)] != -1) return 0;
+    //先手不能先放在中间位置
+    if (Turncnt == 0 && x == 4 && y == 4) return 0;
+
+    //检查气
+    int air = 0, flag = 1, col = (Turncnt) & 1;
+    static int Mark[81];
+    memset(Mark, 0, sizeof(Mark));
+
+    for (int f = 0; f < 4; f++) {
+        int xx = x + Fx[f], yy = y + Fy[f];
+        if (outBd(xx, yy)) continue;
+        if (BoardStatus[id(xx, yy)] == -1) ++air;
+        else if (BoardStatus[id(xx, yy)] == col) {
+            int anc = dsu -> getfa(id(xx, yy));
+            air += (Mark[anc] ^ 1) * Air[anc] - 1;
+            Mark[anc] = 1;
+        }
+        else if (BoardStatus[id(xx, yy)] == (col ^ 1)) {
+            --Air[dsu -> getfa(id(xx, yy))];
+            if (Air[dsu -> getfa(id(xx, yy))] == 0) flag = 0;
+        }
+    }
+    for (int f = 0; f < 4; f++) {
+        int xx = x + Fx[f], yy = y + Fy[f];
+        if (outBd(xx, yy)) continue;
+        if (BoardStatus[id(xx, yy)] == (col ^ 1)) ++Air[dsu -> getfa(id(xx, yy))];
+        else if (BoardStatus[id(xx, yy)] == col) Mark[dsu -> getfa(id(xx, yy))] = 0;
+    }
+    //qDebug() << air << flag;
+    if (air * flag == 0) return -1;
+    return 1;
+}
+
 void nogochessboard::place(int x, int y, int show_msg) {
     if (show_msg == -1) show_msg = SHOW_MSG;
     int check_ret = check(x, y, show_msg);
@@ -175,4 +212,9 @@ void nogochessboard::turncntMinus() {
     --Turncnt;
     emit turncntChanged();
     return;
+}
+
+int nogochessboard::checkPositionColor(int x, int y, int col) {
+    if (outBd(x, y)) return 0;
+    return BoardStatus[id(x, y)] == col;
 }

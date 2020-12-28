@@ -22,10 +22,15 @@ public:
 
     void reset();
     int check(int x, int y,int show_msg = -1);//返回值：0 不合法；1 合法；-1 合法但出现气为 0
+    int checkopp(int x, int y);
     void place(int x, int y,int show_msg = -1);
     std::vector<std::pair<int, int> > getBoard(int show_turn = -1);
     int isGameEnded(){return is_game_end;}
     void SaveData(QString filename);
+    bool outBd(int x, int y) {return x > 8 || x < 0 || y > 8 || y < 0;}
+    bool inBd(int x, int y) {return !outBd(x, y);}
+    int getPositionColor(int x, int y) {return BoardStatus[id(x, y)];}
+    int checkPositionColor(int x, int y, int col);
 
 private:
     int SHOW_MSG;
@@ -39,8 +44,6 @@ private:
     bool is_game_end;
     int AirRec[90][4], AncRec[90][4];
 
-    bool outBd(int x, int y) {return x > 8 || x < 0 || y > 8 || y < 0;}
-    bool inBd(int x, int y) {return !outBd(x, y);}
     int id(int x, int y) { return x * 9 + y;}
     int getX(int x) {return x/9;}
     int getY(int x) {return x%9;}

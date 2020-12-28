@@ -2,10 +2,10 @@
 
 ioInteractor::ioInteractor(int _Player, mainGameWindow *buf) : QWidget()
 {
-    Player[0] = _Player / 10;
-    Player[1] = _Player % 10;
-    if (Player[0] > 0) AI_ID = 1;
-    if (Player[1] > 0) AI_ID = 0;
+    Player[1] = _Player / 10;
+    Player[0] = _Player % 10;
+    if (Player[0] > 0) AI_ID = 0;
+    if (Player[1] > 0) AI_ID = 1;
     int show_msg = 1;
     if (Player[0] > 0 && Player[1] > 0) show_msg = 0;
 
@@ -13,7 +13,7 @@ ioInteractor::ioInteractor(int _Player, mainGameWindow *buf) : QWidget()
     else Game = buf;
 
     //qDebug() << "Player " << Player[0] << Player[1];
-    for (int id = 0; id < 2; id++) AI[id ^ 1] = new aimodule(Player[id]);
+    for (int id = 0; id < 2; id++) AI[id] = new aimodule(Player[id]);
 
     Game -> show();
     Game -> rePaintBoard();
@@ -32,7 +32,7 @@ void ioInteractor::startGame()
         return;
     }
     if (Player[0] != 0 && Player[1] != 0) {
-        int opt = 0;//当前执子者
+        int opt = 1;//当前执子者
         while (Game -> isGameEnded() == 0) {
             std::pair<int, int> ret = AI[opt] -> getPos(Game -> getBoard());
             Game -> place(ret.first, ret.second);
@@ -46,11 +46,11 @@ void ioInteractor::startGame()
         }
         return;
     }
-    if (Player[0] == 0) {
+    if (Player[1] == 0) {
         Game -> rePaintBoard();
         return;
     }
-    std::pair<int, int> ret = AI[0] -> getPos(Game -> getBoard());
+    std::pair<int, int> ret = AI[1] -> getPos(Game -> getBoard());
     //qDebug() << ret.first << ret.second;
     Game -> place(ret.first, ret.second, 0);
     Game -> rePaintBoard();
@@ -68,7 +68,7 @@ void ioInteractor::write(QString filename)
 
     QTextStream out(&writef);
 
-    out << Player[0] << " " << Player[1] << "\n";
+    out << Player[1] << " " << Player[0] << "\n";
 
     writef.close();
     return;
