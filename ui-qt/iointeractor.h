@@ -9,7 +9,7 @@
 #include <QTimer>
 #include <QEventLoop>
 #include "maingamewindow.h"
-#include "ai.h"
+#include "aiheader.h"
 
 class ioInteractor : public QWidget
 {
@@ -20,6 +20,8 @@ public:
 private:
     int Player[2], WINNER, AI_ID;
     mainGameWindow *Game;
+    aimodule *AI[2];
+
 public slots:
     void aiMove();
     void write(QString filename);

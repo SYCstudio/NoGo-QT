@@ -12,13 +12,16 @@ ioInteractor::ioInteractor(int _Player, mainGameWindow *buf) : QWidget()
     if (buf == nullptr) Game = new mainGameWindow(nullptr, show_msg);
     else Game = buf;
 
+    //qDebug() << "Player " << Player[0] << Player[1];
+    for (int id = 0; id < 2; id++) AI[id ^ 1] = new aimodule(Player[id]);
+
     Game -> show();
     Game -> rePaintBoard();
 
     connect(Game, SIGNAL(anyGridClicked()), this, SLOT(aiMove()));
     connect(Game, SIGNAL(saveSignal(QString)), this, SLOT(write(QString)));
     //connect(Game, SLOT(gameEnded(int)), this, SLOT(gameEnded()));
-    AI::INIT();
+
     return;
 }
 
@@ -29,8 +32,9 @@ void ioInteractor::startGame()
         return;
     }
     if (Player[0] != 0 && Player[1] != 0) {
+        int opt = 0;//当前执子者
         while (Game -> isGameEnded() == 0) {
-            std::pair<int, int> ret = AI::AI(Game -> getBoard());
+            std::pair<int, int> ret = AI[opt] -> getPos(Game -> getBoard());
             Game -> place(ret.first, ret.second);
             //qDebug() << ret.first << ret.second;
             Game -> rePaintBoard();
@@ -38,6 +42,7 @@ void ioInteractor::startGame()
             QEventLoop loop;
             QTimer::singleShot(50, &loop, SLOT(quit()));
             loop.exec();
+            opt ^= 1;
         }
         return;
     }
@@ -45,8 +50,7 @@ void ioInteractor::startGame()
         Game -> rePaintBoard();
         return;
     }
-    std::pair<int, int> ret = AI::AI(Game -> getBoard());
-    while (Game -> check(ret.first, ret.second, 0) == 0) ret = AI::AI(Game -> getBoard());
+    std::pair<int, int> ret = AI[0] -> getPos(Game -> getBoard());
     //qDebug() << ret.first << ret.second;
     Game -> place(ret.first, ret.second, 0);
     Game -> rePaintBoard();
@@ -73,9 +77,8 @@ void ioInteractor::write(QString filename)
 void ioInteractor::aiMove() {
     if ((Game -> getTurncnt() & 1) == AI_ID) return;
     if (Player[0] == 0 && Player[1] == 0) return;
-    std::pair<int, int> ret = AI::AI(Game -> getBoard());
-    while (Game -> check(ret.first, ret.second, 0) == 0) ret = AI::AI(Game -> getBoard());
-    //qDebug() << ret.first << ret.second;
+    std::pair<int, int> ret = AI[AI_ID] -> getPos(Game -> getBoard());
+    //qDebug() << "ret:" << ret.first << ret.second;
     Game -> place(ret.first, ret.second, 0);
     Game -> rePaintBoard();
     return;

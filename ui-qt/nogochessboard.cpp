@@ -3,7 +3,7 @@
 nogochessboard::nogochessboard(QWidget *parent,int show_msg) : QWidget(parent)
 {
     SHOW_MSG = show_msg;
-    qDebug() << show_msg;
+    //qDebug() << show_msg;
     memset(Air, 0, sizeof(Air));
     memset(PlaceX, 0, sizeof(PlaceX));
     memset(PlaceY, 0, sizeof(PlaceY));
