@@ -1,6 +1,6 @@
 #include "nogochessboard.h"
 
-nogochessboard::nogochessboard(QWidget *parent,int show_msg) : QWidget(parent)
+nogochessboard::nogochessboard(int show_msg)
 {
     SHOW_MSG = show_msg;
     //qDebug() << show_msg;
@@ -32,16 +32,16 @@ int nogochessboard::check(int x, int y, int show_msg) {
     if (show_msg == -1) show_msg = SHOW_MSG;
     //边界判断
     if (outBd(x, y)) {
-        if (show_msg) QMessageBox::warning(this, tr("Warning!"), tr("Invalid position!"), QMessageBox::Ok);
+        //if (show_msg) QMessageBox::warning(this, tr("Warning!"), tr("Invalid position!"), QMessageBox::Ok);
         return 0;
     }
     if (BoardStatus[id(x, y)] != -1) {
-        if (show_msg) QMessageBox::warning(this, tr("Warning!"), tr("This position has been filled."), QMessageBox::Ok);
+        //if (show_msg) QMessageBox::warning(this, tr("Warning!"), tr("This position has been filled."), QMessageBox::Ok);
         return 0;
     }
     //先手不能先放在中间位置
     if (Turncnt == 0 && x == 4 && y == 4) {
-        if (show_msg) QMessageBox::warning(this, tr("Warning!"), tr("You cannot select the middle position at the first step."), QMessageBox::Ok);
+        //if (show_msg) QMessageBox::warning(this, tr("Warning!"), tr("You cannot select the middle position at the first step."), QMessageBox::Ok);
         return 0;
     }
 
@@ -153,11 +153,6 @@ void nogochessboard::place(int x, int y, int show_msg) {
         finalanc = dsu -> merge(anc,finalanc);
     }
     Air[finalanc] = air;
-
-    if (check_ret == -1) {
-        emit gameEnded(col ^ 1);
-        is_game_end = 1;
-    }
     return;
 }
 
@@ -185,32 +180,15 @@ std::vector<std::pair<int, int> > nogochessboard::getBoard(int show_turn) {
     return R;
 }
 
-void nogochessboard::SaveData(QString filename) {
-    QFile writef(filename);
-    if (!writef.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        QMessageBox::warning(this, tr("Warning!"), tr("Can't write data to file."), QMessageBox::Ok);
-        return;
-    }
-    QByteArray array=writef.readAll();
-    //qDebug () << array;
-
-    QTextStream out(&writef);
-
-    out << getTurncnt() << "\n";
-    for (int i = 1 ; i <= getTurncnt(); i++) out << PlaceX[i] << " " << PlaceY[i] << "\n";
-    writef.close();
-    return;
-}
-
 void nogochessboard::turncntPlus() {
     ++Turncnt;
-    emit turncntChanged();
+    //emit turncntChanged();
     return;
 }
 
 void nogochessboard::turncntMinus() {
     --Turncnt;
-    emit turncntChanged();
+    //emit turncntChanged();
     return;
 }
 

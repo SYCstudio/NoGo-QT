@@ -9,13 +9,22 @@
 #include <QHBoxLayout>
 #include <QString>
 #include <QSignalMapper>
+#include <QFileDialog>
 #include "chessboardbase.h"
 
 class mainGameWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit mainGameWindow(QWidget *parent = nullptr);
+    explicit mainGameWindow(QWidget *parent = nullptr,int show_msg = 1);
+    void setDisable();
+    int getTurncnt(){return ChessBoard -> getTurncnt();}
+    int isGameEnded(){return ChessBoard -> isGameEnded();}
+    void rePaintBoard(){ChessBoard -> repaintBoard();}
+    std::vector<std::pair<int, int> > getBoard(){return ChessBoard -> getBoard();}
+    int check(int x, int y, int show_msg = -1){return ChessBoard -> check(x, y, show_msg);}
+    void place(int x, int y,int show_msg = -1){ChessBoard -> place(x, y, show_msg);}
+
 private:
     int NowDisplayPointer;//当前显示的棋盘是第几回合
     chessboardBase * ChessBoard;
@@ -30,11 +39,14 @@ private:
     QGridLayout *MainLayout;
     QGridLayout *RightLayout;
     QHBoxLayout *BottomLayout;
-
+signals:
+    void anyGridClicked();
+    void saveSignal(QString filename);
 private slots:
     void gameEnded(int winner);
     void turncntChanged();
     void changeNowDisplayPointer(int p);
+    void saveButtonClicked();
 };
 
 #endif // MAINGAMEWINDOW_H

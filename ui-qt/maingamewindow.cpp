@@ -1,6 +1,6 @@
 #include "maingamewindow.h"
 
-mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
+mainGameWindow::mainGameWindow(QWidget *parent,int show_msg) : QWidget(parent)
 {
     //initialize labels and buttons.
     TimePrompt = new QLabel();
@@ -27,7 +27,7 @@ mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
         HistoryButtons[i] -> setEnabled(0);
     }
 
-    ChessBoard = new chessboardBase();
+    ChessBoard = new chessboardBase(nullptr, 50, show_msg);
 
     //initialize layout
     RightLayout = new QGridLayout();
@@ -55,6 +55,8 @@ mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
     connect(ChessBoard, SIGNAL(turncntChanged()), this, SLOT(turncntChanged()));
     connect(ChessBoard, SIGNAL(gameEnded(int)), this, SLOT(gameEnded(int)));
     connect(UndoButton, SIGNAL(clicked()), ChessBoard, SLOT(undo_buf()));
+    connect(ChessBoard, SIGNAL(anyGridClicked()), this, SIGNAL(anyGridClicked()));
+    connect(SaveButton, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
 
     QSignalMapper *historyMapper = new QSignalMapper();
     for (int i = 0; i < 81; i++) connect(HistoryButtons[i], SIGNAL(clicked()), historyMapper, SLOT(map()));
@@ -66,12 +68,17 @@ mainGameWindow::mainGameWindow(QWidget *parent) : QWidget(parent)
     return;
 }
 
+void mainGameWindow::setDisable() {
+    ChessBoard -> setDisable();
+    return;
+}
+
 void mainGameWindow::gameEnded(int opt)
 {
     ChessBoard -> repaintBoard();
     QString buf(tr("The game is end.\nThe winner is "));
     buf += opt? tr("black") : tr("white");
-    QMessageBox::information(this, tr("end."), buf, QMessageBox::Ok);
+    QMessageBox::information(this, tr("Game End"), buf, QMessageBox::Ok);
     close();
 }
 
@@ -87,5 +94,14 @@ void mainGameWindow::changeNowDisplayPointer(int p)
 {
     //qDebug() << "changePointer" << p << ChessBoard -> getTurncnt();
     UndoButton -> setEnabled(p && p == ChessBoard -> getTurncnt());
+    return;
+}
+
+void mainGameWindow::saveButtonClicked() {
+    QString filename = QFileDialog::getSaveFileName(this, tr("Choose filename"), "", tr("Data(*.dat)"));
+    if (!filename.isNull()) {
+        emit saveSignal(filename);
+        ChessBoard -> SaveData(filename);
+    }
     return;
 }

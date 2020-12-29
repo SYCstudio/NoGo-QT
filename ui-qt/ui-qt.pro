@@ -18,21 +18,31 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    aimodule.cpp \
     chessboardbase.cpp \
     disjointsetunion.cpp \
+    iointeractor.cpp \
+    languageselector.cpp \
     main.cpp \
     maingamewindow.cpp \
     mainwidget.cpp \
-    nogochessboard.cpp
+    nogochessboard.cpp \
+    playerselecter.cpp
 
 HEADERS += \
+    aiheader.h \
+    aimodule.h \
     chessboardbase.h \
     disjointsetunion.h \
+    iointeractor.h \
+    languageselector.h \
     maingamewindow.h \
     mainwidget.h \
-    nogochessboard.h
+    nogochessboard.h \
+    playerselecter.h
 
 TRANSLATIONS += \
+    ui-qt_zh_CN.ts \
     ui-qt_en_GB.ts
 
 # Default rules for deployment.

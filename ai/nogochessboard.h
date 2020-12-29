@@ -1,22 +1,15 @@
 #ifndef NOGOCHESSBOARD_H
 #define NOGOCHESSBOARD_H
 
-#include <QApplication>
-#include <QMessageBox>
-#include <QDebug>
-#include <QWidget>
-#include <QFile>
-#include <QTextStream>
 #include <vector>
 #include <cstring>
 #include <stack>
 #include "disjointsetunion.h"
 
-class nogochessboard : public QWidget
+class nogochessboard
 {
-    Q_OBJECT
 public:
-    nogochessboard(QWidget *parent = nullptr,int show_msg = 1);
+    nogochessboard(int show_msg);
 
     int getTurncnt() {return Turncnt;}
 
@@ -26,7 +19,6 @@ public:
     void place(int x, int y,int show_msg = -1);
     std::vector<std::pair<int, int> > getBoard(int show_turn = -1);
     int isGameEnded(){return is_game_end;}
-    void SaveData(QString filename);
     bool outBd(int x, int y) {return x > 8 || x < 0 || y > 8 || y < 0;}
     bool inBd(int x, int y) {return !outBd(x, y);}
     int getPositionColor(int x, int y) {return BoardStatus[id(x, y)];}
@@ -51,11 +43,10 @@ private:
     void turncntPlus();
     void turncntMinus();
 
-signals:
-    void gameEnded(int winner);//0-white,1-black
-    void turncntChanged();
+    //void gameEnded(int winner);//0-white,1-black
+    //void turncntChanged();
 
-public slots:
+public:
     void undo();
 };
 

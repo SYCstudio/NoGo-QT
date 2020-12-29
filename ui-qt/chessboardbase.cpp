@@ -23,8 +23,10 @@ chessboardBase::chessboardBase(QWidget *parent,int size,int show_msg) : QWidget(
     //连接按钮触发与内联棋盘数据
     QSignalMapper *mapForBoard = new QSignalMapper();
     for (int i = 0; i < 9; i++)
-        for (int j = 0; j < 9; j++)
+        for (int j = 0; j < 9; j++) {
             connect(BoardButton[i][j], SIGNAL(clicked()), mapForBoard, SLOT(map()));
+            connect(BoardButton[i][j], SIGNAL(clicked()), this, SIGNAL(anyGridClicked()));
+        }
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++)
             mapForBoard -> setMapping(BoardButton[i][j], i*9+j);
@@ -52,7 +54,7 @@ void chessboardBase::setDisable() {
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++) {
             BoardButton[i][j] -> setEnabled(0);
-            BoardButton[i][j] -> setStyleSheet("");
+            //BoardButton[i][j] -> setStyleSheet("");
         }
     return;
 }
@@ -61,13 +63,11 @@ void chessboardBase::repaintBoard(int turn) {
     setDisable();
     if (turn == -1) turn = BoardData -> getTurncnt();
     //qDebug() << turn;
-    std::vector<int> Bd = BoardData -> getBoard(turn);
-    for (int i = 0; i < 9; i++)
-        for (int j = 0; j < 9; j++) {
-            int col = Bd[i * 9 + j];
-            if (col == 0) BoardButton[i][j] -> setStyleSheet("background-color: white");
-            if (col == 1) BoardButton[i][j] -> setStyleSheet("background-color: black");
-        }
+    std::vector<std::pair<int, int> > R = BoardData -> getBoard(turn);
+    for (int i = 0; i < 9; i++) for (int j = 0; j < 9; j++) BoardButton[i][j] -> setStyleSheet("");
+    for (int i = 0; i < turn; i++)
+        if (i & 1) BoardButton[R[i].first][R[i].second] -> setStyleSheet("background-color: white");
+        else BoardButton[R[i].first][R[i].second] -> setStyleSheet("background-color: black");
     for (int i = 0; i < 9; i++) for (int j = 0; j < 9; j++) BoardButton[i][j] -> setEnabled(turn == BoardData -> getTurncnt());
     return;
 }
