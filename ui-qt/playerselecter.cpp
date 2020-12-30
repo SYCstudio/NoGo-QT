@@ -29,6 +29,7 @@ playerselecter::playerselecter(QDialog *parent) : QDialog(parent)
         P[i] -> addItem(tr("Human"));
         P[i] -> addItem(tr("AI(level 0)"));
         P[i] -> addItem(tr("AI(level 1)"));
+        P[i] -> addItem(tr("AI(level 2)"));
         layout -> addWidget(P[i], 3, i+1);
     }
 

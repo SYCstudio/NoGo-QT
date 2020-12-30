@@ -15,13 +15,19 @@ aimodule::aimodule(int level, QWidget *parent) : QWidget(parent)
 pair<int, int> aimodule::getPos(vector<pair<int, int> > Bd) {
     if (Level == 1) return airandom::getPos(Bd);
     if (Level == 2) return aigreedy::getPos(Bd);
+    if (Level == 3) return aimcts::getPos(Bd);
+}
+
+namespace airandom {
+    nogochessboard * data = nullptr;//new nogochessboard(nullptr, 0);
 }
 
 pair<int, int> airandom::getPos(vector<pair<int, int> > Bd)
 {
     //qDebug() << "RANDOM";
 
-    data -> reset();
+    if (data == nullptr) data = new nogochessboard(nullptr, 0);
+    else data -> reset();
 
     int turn = Bd.size();
     for (int i = 0; i < turn; i++) data -> place(Bd[i].first, Bd[i].second);
@@ -43,11 +49,16 @@ pair<int, int> airandom::getPos(vector<pair<int, int> > Bd)
     return Pos[id];
 }
 
+namespace aigreedy {
+    nogochessboard *data = nullptr;//nogochessboard(nullptr, 0);
+}
+
 pair<int, int> aigreedy::getPos(vector<pair<int, int> > Bd)
 {
     //qDebug() << "GREEDY" ;
 
-    data -> reset();
+    if (data == nullptr) data = new nogochessboard(nullptr, 0);
+    else data -> reset();
 
     int turn = Bd.size(), col = (turn + 1) & 1;
     for (int i = 0; i < turn; i++) data -> place(Bd[i].first, Bd[i].second);
@@ -143,10 +154,21 @@ pair<int, int> aigreedy::getPos(vector<pair<int, int> > Bd)
     }
 }
 
+namespace aimcts {
+    int nodecnt, playcnt;
+    NodeData T[1010000];
+    nogochessboard * data = nullptr;//= new nogochessboard(nullptr, 0);
+}
+
+int aimcts::getId(int x, int y){return x * 9 + y;}
+int aimcts::getX(int id){return id / 9;}
+int aimcts::getY(int id){return id % 9;}
+
 pair<int, int> aimcts::getPos(vector<pair<int, int> > Bd)
 {
-    data -> reset();
-    nodecnt = 0;
+    if (data == nullptr) data = new nogochessboard(nullptr, 0);
+    else data -> reset();
+    nodecnt = playcnt = 0;
     getNewnode();//initialize root
 
     int turn = Bd.size();
@@ -159,13 +181,16 @@ pair<int, int> aimcts::getPos(vector<pair<int, int> > Bd)
             if (data -> check(x, y) == 1) my.push_back(getId(x, y));
             if (data -> checkopp(x, y) == 1) opp.push_back(getId(x, y));
         }
+    //qDebug() << my.size() << opp.size();
+    if (my.size() == 0) {
+        for (int x = 0; x < 9; x++)
+            for (int y = 0; y < 9; y++)
+                if (data -> check(x, y) != 0) return make_pair(x, y);
+    }
 
     //开始 MTCS
-    for (int _times = 0; _times < MCTS_TIMES; _times++) {
-        My = my;
-        Opp = opp;
-        dfs(1, 1);
-    }
+    while (playcnt < MCTS_TIMES) dfs(1, 1);
+    qDebug() << nodecnt ;
 
     int ansvisit = 0, ans;
     for (map<int, int>::iterator it = T[1].Son.begin(); it != T[1].Son.end(); it++)
@@ -180,42 +205,88 @@ int aimcts::getNewnode() {
 }
 
 int aimcts::dfs(int depth, int u) {
+    Q_ASSERT(u > 0);
+    //qDebug() << depth << u << nodecnt << T[u].visit;
+    ++playcnt;
     if (T[u].visit == 0) { //未探索过，开始随机走子
-        T[u].visit ++;
-        int backup_turn = data -> getTurncnt(), is_my = 0;
+        vector<int> Pos[2];
+
+        for (int x = 0; x < 9; x++)
+            for (int y = 0; y < 9; y++) {
+                if (data -> check(x, y) == 1) Pos[0].push_back(getId(x, y));
+                if (data -> checkopp(x, y) == 1) Pos[1].push_back(getId(x, y));
+            }
+        T[u].P = Pos[0];
+
+        int backup_turn = data -> getTurncnt(), is_my_win = 0;
         while (1) {
             int placeable = 0;
-            while (!(placeable == 1 || My.size() == 0)) {
-                int sz = My.size();
+            while (1) {
+                int sz = Pos[is_my_win].size();
+                if (sz == 0) break;
                 int id = myrandomlib::getInt(sz);
-                std::swap(My[id], My[sz-1]);
-                id = My[sz-1];My.pop_back();
+                std::swap(Pos[is_my_win][id], Pos[is_my_win][sz-1]);
+                id = Pos[is_my_win][sz-1];Pos[is_my_win].pop_back();
                 int x = getX(id), y = getY(id);
 
                 if (data -> check(x, y) == 1) {
                     data -> place(x, y);
                     placeable = 1;
+                    break;
                 }
             }
 
             if (placeable == 0) {
-                T[u].wint += is_my;
+                T[u].wint += is_my_win;
                 break;
             }
 
-            is_my ^= 1;
-            My.swap(Opp);
+            is_my_win ^= 1;
+            //My.swap(Opp);
+            //std::swap(My, Opp);
         }
         while (data -> getTurncnt() > backup_turn) data -> undo();
-        return is_my;
+        ++T[u].visit;
+        return is_my_win;
     }
 
-    //已探索过，检查是否有未扩展的子节点
-    int pos = -1;
-    vector<int> buf, unvisit;
-    for (int i = 0, sz = My.size(); i < sz; i++)
-        if (data -> check(getX(My[i]), getY(My[i])) == 1) {
-            buf.push_back(My[i]);
-            if (T[u].Son.count(My[i]) == 0) unvisit.push_back(My[i]);
+    if (T[u].P.size() == 0) {//该节点已经被完全探索
+        if (T[u].Son.size() == 0) {
+            T[u].visit ++;
+            return 0;
         }
+        double mxvalue = -inf;
+        int son = -1;
+        for (map<int, int>::iterator it = T[u].Son.begin(); it != T[u].Son.end(); it++) {
+            int v = (*it).second;
+            double value = 1.0 * T[v].wint / T[v].visit + BALANCE_VALUE * sqrt(log(T[u].visit) / T[v].visit);
+            if (value > mxvalue) mxvalue = value, son = (*it).first;
+        }
+        //qDebug() << "place:" << getX(son) << getY(son) << T[u].Son[son];
+        Q_ASSERT(son != -1);
+
+        data -> place(getX(son), getY(son));
+        int ret = dfs(depth + 1, T[u].Son[son]);
+        data -> undo();
+
+        T[u].visit++;
+        T[u].wint += ret ^ 1;
+        return ret ^ 1;
+    }
+
+    //该节点存在未探索的子节点
+    int sz = T[u].P.size();
+    int id = myrandomlib::getInt(sz);
+    std::swap(T[u].P[id], T[u].P[sz-1]);
+    id = T[u].P[sz-1];T[u].P.pop_back();
+
+    T[u].Son[id] = getNewnode();
+    //qDebug() << "place new:" << getX(id) << getY(id) << T[u].Son[id];
+    data -> place(getX(id), getY(id));
+    int ret = dfs(depth + 1, T[u].Son[id]);
+    data -> undo();
+
+    T[u].visit++;
+    T[u].wint += ret ^ 1;
+    return ret ^ 1;
 }

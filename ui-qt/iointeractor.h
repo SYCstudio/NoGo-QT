@@ -9,7 +9,7 @@
 #include <QTimer>
 #include <QEventLoop>
 #include "maingamewindow.h"
-#include "aiheader.h"
+#include "aimodule.h"
 
 class ioInteractor : public QWidget
 {

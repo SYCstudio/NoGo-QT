@@ -30,7 +30,6 @@ SOURCES += \
     playerselecter.cpp
 
 HEADERS += \
-    aiheader.h \
     aimodule.h \
     chessboardbase.h \
     disjointsetunion.h \

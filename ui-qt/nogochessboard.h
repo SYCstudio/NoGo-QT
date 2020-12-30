@@ -37,12 +37,12 @@ private:
     const int Fx[4] = {-1, 0, 1, 0};
     const int Fy[4] = {0, 1, 0, -1};
     disjointSetUnion *dsu;//并查集维护气
-    int Air[81];//保存气
-    int BoardStatus[81];//棋盘
-    int Turncnt, PlaceX[90], PlaceY[90];//回合，分别下的位置
-    int TopPositionRecord[90];
+    int Air[100];//保存气
+    int BoardStatus[100];//棋盘
+    int Turncnt, PlaceX[100], PlaceY[100];//回合，分别下的位置
+    int TopPositionRecord[100];
     bool is_game_end;
-    int AirRec[90][4], AncRec[90][4];
+    int AirRec[100][4], AncRec[100][4];
 
     int id(int x, int y) { return x * 9 + y;}
     int getX(int x) {return x/9;}
