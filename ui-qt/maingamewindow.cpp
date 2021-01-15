@@ -3,9 +3,9 @@
 mainGameWindow::mainGameWindow(QWidget *parent,int show_msg) : QWidget(parent)
 {
     //initialize labels and buttons.
-    TimePrompt = new QLabel();
-    TimeShow = new QLabel();
-    TimePrompt -> setText(tr("Time:"));
+    //TimePrompt = new QLabel();
+    //TimeShow = new QLabel();
+    //TimePrompt -> setText(tr("Time:"));
 
     TurnPrompt = new QLabel();
     TurnShow = new QLabel();
@@ -31,13 +31,13 @@ mainGameWindow::mainGameWindow(QWidget *parent,int show_msg) : QWidget(parent)
 
     //initialize layout
     RightLayout = new QGridLayout();
-    RightLayout -> addWidget(TimePrompt, 1, 1);
-    RightLayout -> addWidget(TimeShow, 1, 2);
-    RightLayout -> addWidget(TurnPrompt, 2, 1);
-    RightLayout -> addWidget(TurnShow, 2, 2);
-    RightLayout -> addWidget(SaveButton, 3, 1, 1, 2);
-    RightLayout -> addWidget(UndoButton, 4, 1, 1, 2);
-    RightLayout -> addWidget(QuitButton, 5, 1, 1, 2);
+    //RightLayout -> addWidget(TimePrompt, 1, 1);
+    //RightLayout -> addWidget(TimeShow, 1, 2);
+    RightLayout -> addWidget(TurnPrompt, 1, 1);
+    RightLayout -> addWidget(TurnShow, 1, 2);
+    RightLayout -> addWidget(SaveButton, 2, 1, 1, 2);
+    RightLayout -> addWidget(UndoButton, 3, 1, 1, 2);
+    RightLayout -> addWidget(QuitButton, 4, 1, 1, 2);
 
     BottomLayout = new QHBoxLayout();
     BottomLayout -> setSpacing(0);

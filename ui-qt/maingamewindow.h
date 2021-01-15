@@ -28,8 +28,8 @@ public:
 private:
     int NowDisplayPointer;//当前显示的棋盘是第几回合
     chessboardBase * ChessBoard;
-    QLabel *TimePrompt;
-    QLabel *TimeShow;
+    //QLabel *TimePrompt;
+    //QLabel *TimeShow;
     QLabel *TurnPrompt;
     QLabel *TurnShow;
     QPushButton *SaveButton;
