@@ -4,12 +4,12 @@
 <context>
     <name>ioInteractor</name>
     <message>
-        <location filename="iointeractor.cpp" line="61"/>
+        <location filename="iointeractor.cpp" line="69"/>
         <source>Warning!</source>
         <translation>警告！</translation>
     </message>
     <message>
-        <location filename="iointeractor.cpp" line="61"/>
+        <location filename="iointeractor.cpp" line="69"/>
         <source>Can&apos;t write data to file.</source>
         <translation>无法写入文件。</translation>
     </message>
@@ -34,7 +34,7 @@
     <message>
         <location filename="languageselector.cpp" line="14"/>
         <source>English</source>
-        <translation>英语</translation>
+        <translation>English</translation>
     </message>
     <message>
         <location filename="languageselector.cpp" line="15"/>
@@ -45,51 +45,66 @@
 <context>
     <name>mainGameWindow</name>
     <message>
-        <location filename="maingamewindow.cpp" line="8"/>
         <source>Time:</source>
-        <translation>时间：</translation>
+        <translation type="vanished">时间：</translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="12"/>
+        <location filename="maingamewindow.cpp" line="9"/>
+        <source>Have fun</source>
+        <translation>玩得开心</translation>
+    </message>
+    <message>
+        <location filename="maingamewindow.cpp" line="13"/>
         <source>Turn:</source>
         <translation>回合：</translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="15"/>
+        <location filename="maingamewindow.cpp" line="17"/>
+        <location filename="maingamewindow.cpp" line="137"/>
+        <source>Tips(Off)</source>
+        <translation>提示（关闭）</translation>
+    </message>
+    <message>
+        <location filename="maingamewindow.cpp" line="20"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="18"/>
+        <location filename="maingamewindow.cpp" line="23"/>
         <source>Undo</source>
-        <translation>撤回上一步</translation>
+        <translation>反悔</translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="22"/>
+        <location filename="maingamewindow.cpp" line="27"/>
         <source>Quit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="79"/>
+        <location filename="maingamewindow.cpp" line="81"/>
         <source>The game is end.
 The winner is </source>
         <translation>游戏结束。
-本局的胜利者是</translation>
+本局的胜利者是 </translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="80"/>
+        <location filename="maingamewindow.cpp" line="82"/>
         <source>black</source>
         <translation>黑方</translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="80"/>
+        <location filename="maingamewindow.cpp" line="82"/>
         <source>white</source>
         <translation>白方</translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="81"/>
+        <location filename="maingamewindow.cpp" line="83"/>
         <source>Game End</source>
         <translation>本局结束</translation>
+    </message>
+    <message>
+        <location filename="maingamewindow.cpp" line="136"/>
+        <source>Tips(On)</source>
+        <translation>提示（开启）</translation>
     </message>
     <message>
         <source>ok</source>
@@ -101,14 +116,14 @@ The winner is </source>
         <translation type="vanished">结束</translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="101"/>
+        <location filename="maingamewindow.cpp" line="103"/>
         <source>Choose filename</source>
         <translation>选择保存的文件名</translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="101"/>
+        <location filename="maingamewindow.cpp" line="103"/>
         <source>Data(*.dat)</source>
-        <translation></translation>
+        <translation>数据文件(*.dat)</translation>
     </message>
 </context>
 <context>
@@ -165,7 +180,7 @@ The winner is </source>
         <location filename="nogochessboard.cpp" line="35"/>
         <location filename="nogochessboard.cpp" line="39"/>
         <location filename="nogochessboard.cpp" line="44"/>
-        <location filename="nogochessboard.cpp" line="156"/>
+        <location filename="nogochessboard.cpp" line="191"/>
         <source>Warning!</source>
         <translation>警告！</translation>
     </message>
@@ -185,7 +200,7 @@ The winner is </source>
         <translation>先手不能在第一轮选择中间的位置。</translation>
     </message>
     <message>
-        <location filename="nogochessboard.cpp" line="156"/>
+        <location filename="nogochessboard.cpp" line="191"/>
         <source>Can&apos;t write data to file.</source>
         <translation>无法写入文件。</translation>
     </message>
@@ -231,8 +246,18 @@ The black will move chess first.</source>
     </message>
     <message>
         <location filename="playerselecter.cpp" line="30"/>
-        <source>AI</source>
-        <translation></translation>
+        <source>AI(level 0)</source>
+        <translation>AI（等级0）</translation>
+    </message>
+    <message>
+        <location filename="playerselecter.cpp" line="31"/>
+        <source>AI(level 1)</source>
+        <translation>AI（等级1）</translation>
+    </message>
+    <message>
+        <location filename="playerselecter.cpp" line="32"/>
+        <source>AI(level 2)</source>
+        <translation>AI（等级2）</translation>
     </message>
 </context>
 </TS>

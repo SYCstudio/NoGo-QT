@@ -6,10 +6,15 @@ mainGameWindow::mainGameWindow(QWidget *parent,int show_msg) : QWidget(parent)
     //TimePrompt = new QLabel();
     //TimeShow = new QLabel();
     //TimePrompt -> setText(tr("Time:"));
+    setWindowTitle(tr("Have fun"));
 
     TurnPrompt = new QLabel();
     TurnShow = new QLabel();
     TurnPrompt -> setText(tr("Turn:"));
+
+    is_tips = 0;
+    TipsButton = new QPushButton();
+    TipsButton -> setText(tr("Tips(Off)"));
 
     SaveButton = new QPushButton();
     SaveButton -> setText(tr("Save"));
@@ -35,9 +40,10 @@ mainGameWindow::mainGameWindow(QWidget *parent,int show_msg) : QWidget(parent)
     //RightLayout -> addWidget(TimeShow, 1, 2);
     RightLayout -> addWidget(TurnPrompt, 1, 1);
     RightLayout -> addWidget(TurnShow, 1, 2);
-    RightLayout -> addWidget(SaveButton, 2, 1, 1, 2);
-    RightLayout -> addWidget(UndoButton, 3, 1, 1, 2);
-    RightLayout -> addWidget(QuitButton, 4, 1, 1, 2);
+    RightLayout -> addWidget(TipsButton, 2, 1, 1, 2);
+    RightLayout -> addWidget(SaveButton, 3, 1, 1, 2);
+    RightLayout -> addWidget(UndoButton, 4, 1, 1, 2);
+    RightLayout -> addWidget(QuitButton, 5, 1, 1, 2);
 
     BottomLayout = new QHBoxLayout();
     BottomLayout -> setSpacing(0);
@@ -63,6 +69,7 @@ mainGameWindow::mainGameWindow(QWidget *parent,int show_msg) : QWidget(parent)
     connect(UndoButton, SIGNAL(clicked()), this, SLOT(undo_buf()));
     connect(ChessBoard, SIGNAL(anyGridClicked()), this, SIGNAL(anyGridClicked()));
     connect(SaveButton, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
+    connect(TipsButton, SIGNAL(clicked()), this, SLOT(tipschanged()));
     //*/
 
     return;
@@ -109,6 +116,7 @@ void mainGameWindow::setPlayerDetail(int p1, int p2)
         UndoButton -> setEnabled(0);
         SaveButton -> setEnabled(0);
         QuitButton -> setEnabled(0);
+        TipsButton -> setEnabled(0);
     }
     return;
 }
@@ -118,5 +126,15 @@ void mainGameWindow::undo_buf()
     //qDebug() << P1 << P2;
     if (P1 == 0 && P2 == 0) ChessBoard -> undo_buf();
     else ChessBoard -> undo_buf(), ChessBoard -> undo_buf();
+    return;
+}
+
+void mainGameWindow::tipschanged()
+{
+    is_tips ^= 1;
+    //qDebug() << "main:" << is_tips;
+    if (is_tips) TipsButton -> setText(tr("Tips(On)"));
+    else TipsButton -> setText(tr("Tips(Off)"));
+    ChessBoard -> changeshowTipsFlag();
     return;
 }

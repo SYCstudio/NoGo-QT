@@ -3,6 +3,7 @@
 chessboardBase::chessboardBase(QWidget *parent,int size,int show_msg) : QWidget(parent)
 {
     SHOW_MSG = show_msg;
+    is_tips_showed = 0;
     //initialize buttons and labels
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++) {
@@ -69,6 +70,8 @@ void chessboardBase::repaintBoard(int turn) {
         if (i & 1) BoardButton[R[i].first][R[i].second] -> setStyleSheet("background-color: white");
         else BoardButton[R[i].first][R[i].second] -> setStyleSheet("background-color: black");
     for (int i = 0; i < 9; i++) for (int j = 0; j < 9; j++) BoardButton[i][j] -> setEnabled(turn == BoardData -> getTurncnt());
+    //qDebug() << is_tips_showed;
+    if (is_tips_showed) showTips();
     return;
 }
 
@@ -83,5 +86,30 @@ void chessboardBase::clickTrans(int xy) {
 void chessboardBase::undo_buf() {
     BoardData -> undo();
     repaintBoard();
+    return;
+}
+
+void chessboardBase::showTips()
+{
+    for (int i = 0; i < 9; i++)
+        for (int j = 0; j < 9; j++) {
+            //if (BoardButton[i][j] -> isEnabled() == 0) continue;
+            if (BoardData -> check(i, j, 0) == -1) {
+                BoardButton[i][j] -> setEnabled(0);
+                BoardButton[i][j] -> setStyleSheet("background-color: Lightpink");
+            }
+            else if (BoardData -> checkopp(i, j) == -1) {
+                BoardButton[i][j] -> setStyleSheet("background-color: Aquamarine");
+            }
+        }
+    return;
+}
+
+void chessboardBase::changeshowTipsFlag()
+{
+    //qDebug() << "switch";
+    is_tips_showed ^= 1;
+    repaintBoard();
+    //qDebug() << is_tips_showed;
     return;
 }

@@ -4,12 +4,12 @@
 <context>
     <name>ioInteractor</name>
     <message>
-        <location filename="iointeractor.cpp" line="61"/>
+        <location filename="iointeractor.cpp" line="69"/>
         <source>Warning!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="iointeractor.cpp" line="61"/>
+        <location filename="iointeractor.cpp" line="69"/>
         <source>Can&apos;t write data to file.</source>
         <translation></translation>
     </message>
@@ -39,65 +39,76 @@
     <message>
         <location filename="languageselector.cpp" line="15"/>
         <source>Simplified Chinese</source>
-        <translation></translation>
+        <translation>简体中文</translation>
     </message>
 </context>
 <context>
     <name>mainGameWindow</name>
     <message>
-        <location filename="maingamewindow.cpp" line="8"/>
-        <source>Time:</source>
+        <location filename="maingamewindow.cpp" line="9"/>
+        <source>Have fun</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="12"/>
+        <location filename="maingamewindow.cpp" line="13"/>
         <source>Turn:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="15"/>
+        <location filename="maingamewindow.cpp" line="17"/>
+        <location filename="maingamewindow.cpp" line="137"/>
+        <source>Tips(Off)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="maingamewindow.cpp" line="20"/>
         <source>Save</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="18"/>
+        <location filename="maingamewindow.cpp" line="23"/>
         <source>Undo</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="22"/>
+        <location filename="maingamewindow.cpp" line="27"/>
         <source>Quit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="79"/>
+        <location filename="maingamewindow.cpp" line="81"/>
         <source>The game is end.
 The winner is </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="80"/>
+        <location filename="maingamewindow.cpp" line="82"/>
         <source>black</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="80"/>
+        <location filename="maingamewindow.cpp" line="82"/>
         <source>white</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="81"/>
+        <location filename="maingamewindow.cpp" line="83"/>
         <source>Game End</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="101"/>
+        <location filename="maingamewindow.cpp" line="103"/>
         <source>Choose filename</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingamewindow.cpp" line="101"/>
+        <location filename="maingamewindow.cpp" line="103"/>
         <source>Data(*.dat)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="maingamewindow.cpp" line="136"/>
+        <source>Tips(On)</source>
         <translation></translation>
     </message>
 </context>
@@ -155,7 +166,7 @@ The winner is </source>
         <location filename="nogochessboard.cpp" line="35"/>
         <location filename="nogochessboard.cpp" line="39"/>
         <location filename="nogochessboard.cpp" line="44"/>
-        <location filename="nogochessboard.cpp" line="156"/>
+        <location filename="nogochessboard.cpp" line="191"/>
         <source>Warning!</source>
         <translation></translation>
     </message>
@@ -175,7 +186,7 @@ The winner is </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="nogochessboard.cpp" line="156"/>
+        <location filename="nogochessboard.cpp" line="191"/>
         <source>Can&apos;t write data to file.</source>
         <translation></translation>
     </message>
@@ -220,7 +231,17 @@ The black will move chess first.</source>
     </message>
     <message>
         <location filename="playerselecter.cpp" line="30"/>
-        <source>AI</source>
+        <source>AI(level 0)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="playerselecter.cpp" line="31"/>
+        <source>AI(level 1)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="playerselecter.cpp" line="32"/>
+        <source>AI(level 2)</source>
         <translation></translation>
     </message>
 </context>

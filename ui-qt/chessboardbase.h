@@ -23,9 +23,12 @@ public:
     int check(int x, int y,int show_msg = -1){return BoardData -> check(x, y,show_msg);}
     void place(int x, int y,int show_msg = -1){BoardData -> place(x, y, show_msg);}
     void SaveData(QString filename){BoardData -> SaveData(filename);}
+    void showTips();
+    void changeshowTipsFlag();
 
 private:
     int SHOW_MSG;
+    bool is_tips_showed;
 
     nogochessboard *BoardData;
     QPushButton *BoardButton[9][9];

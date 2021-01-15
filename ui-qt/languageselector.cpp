@@ -12,7 +12,7 @@ languageselector::languageselector(QDialog *parent) : QDialog(parent)
     LanguageBox = new QComboBox();
 
     LanguageBox -> addItem(tr("English"));
-    LanguageBox -> addItem(tr("Simplified Chinese"));
+    LanguageBox -> addItem(tr("简体中文"));
 
     layout = new QGridLayout();
     layout -> addWidget(LanguageBox, 1, 1, 1, 2);
