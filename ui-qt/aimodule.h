@@ -17,7 +17,7 @@ using std::map;
 
 namespace myrandomlib
 {
-    static std::mt19937 rnd(0);//rnd(time(0));
+    static std::mt19937 rnd(time(0));//rnd(time(0));
     int getInt(int upper);
 };
 
@@ -52,8 +52,8 @@ namespace aigreedy {
 
 namespace aimcts {
     const double inf = 1e10;
-    const double BALANCE_VALUE = sqrt(2);
-    const int MCTS_TIMES = 1000;
+    const double BALANCE_VALUE = 1.0/sqrt(2);
+    const int MCTS_TIMES = 30000;
     class NodeData {
     public:
         int wint, visit, fa;

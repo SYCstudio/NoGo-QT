@@ -216,6 +216,9 @@ int aimcts::dfs(int depth, int u) {
                 if (data -> check(x, y) == 1) Pos[0].push_back(getId(x, y));
                 if (data -> checkopp(x, y) == 1) Pos[1].push_back(getId(x, y));
             }
+
+        std::shuffle(Pos[0].begin(), Pos[0].end(), std::mt19937(time(0)));
+        std::shuffle(Pos[1].begin(), Pos[1].end(), std::mt19937(time(0)));
         T[u].P = Pos[0];
 
         int backup_turn = data -> getTurncnt(), is_my_win = 0;
@@ -224,9 +227,8 @@ int aimcts::dfs(int depth, int u) {
             while (1) {
                 int sz = Pos[is_my_win].size();
                 if (sz == 0) break;
-                int id = myrandomlib::getInt(sz);
-                std::swap(Pos[is_my_win][id], Pos[is_my_win][sz-1]);
-                id = Pos[is_my_win][sz-1];Pos[is_my_win].pop_back();
+                int id = Pos[is_my_win][sz-1];
+                Pos[is_my_win].pop_back();
                 int x = getX(id), y = getY(id);
 
                 if (data -> check(x, y) == 1) {
@@ -276,9 +278,8 @@ int aimcts::dfs(int depth, int u) {
 
     //该节点存在未探索的子节点
     int sz = T[u].P.size();
-    int id = myrandomlib::getInt(sz);
-    std::swap(T[u].P[id], T[u].P[sz-1]);
-    id = T[u].P[sz-1];T[u].P.pop_back();
+    int id = T[u].P[sz-1];
+    T[u].P.pop_back();
 
     T[u].Son[id] = getNewnode();
     //qDebug() << "place new:" << getX(id) << getY(id) << T[u].Son[id];
