@@ -73,6 +73,7 @@ void chessboardBase::repaintBoard(int turn) {
 }
 
 void chessboardBase::clickTrans(int xy) {
+    //qDebug() << "click:" << xy;
     setDisable();
     BoardData -> place(xy / 9, xy % 9);
     repaintBoard();

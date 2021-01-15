@@ -17,16 +17,18 @@ class mainGameWindow : public QWidget
     Q_OBJECT
 public:
     explicit mainGameWindow(QWidget *parent = nullptr,int show_msg = 1);
-    void setDisable();
+    void setDisable(){ChessBoard -> setDisable();}
     int getTurncnt(){return ChessBoard -> getTurncnt();}
     int isGameEnded(){return ChessBoard -> isGameEnded();}
     void rePaintBoard(){ChessBoard -> repaintBoard();}
     std::vector<std::pair<int, int> > getBoard(){return ChessBoard -> getBoard();}
     int check(int x, int y, int show_msg = -1){return ChessBoard -> check(x, y, show_msg);}
     void place(int x, int y,int show_msg = -1){ChessBoard -> place(x, y, show_msg);}
+    void setPlayerDetail(int p1, int p2);
 
 private:
     int NowDisplayPointer;//当前显示的棋盘是第几回合
+    bool is_ai;
     chessboardBase * ChessBoard;
     //QLabel *TimePrompt;
     //QLabel *TimeShow;

@@ -51,25 +51,20 @@ mainGameWindow::mainGameWindow(QWidget *parent,int show_msg) : QWidget(parent)
     setLayout(MainLayout);
 
     //setup connect
+    QSignalMapper *historyMapper = new QSignalMapper();
+    for (int i = 0; i < 81; i++) connect(HistoryButtons[i], SIGNAL(clicked()), historyMapper, SLOT(map()));
+    for (int i = 0; i < 81; i++) historyMapper -> setMapping(HistoryButtons[i], i+1);
+    connect(historyMapper, SIGNAL(mapped(int)), ChessBoard, SLOT(repaintBoard(int)));
+    connect(historyMapper, SIGNAL(mapped(int)), this, SLOT(changeNowDisplayPointer(int)));
+
     connect(QuitButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ChessBoard, SIGNAL(turncntChanged()), this, SLOT(turncntChanged()));
     connect(ChessBoard, SIGNAL(gameEnded(int)), this, SLOT(gameEnded(int)));
     connect(UndoButton, SIGNAL(clicked()), ChessBoard, SLOT(undo_buf()));
     connect(ChessBoard, SIGNAL(anyGridClicked()), this, SIGNAL(anyGridClicked()));
     connect(SaveButton, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
-
-    QSignalMapper *historyMapper = new QSignalMapper();
-    for (int i = 0; i < 81; i++) connect(HistoryButtons[i], SIGNAL(clicked()), historyMapper, SLOT(map()));
-    for (int i = 0; i < 81; i++) historyMapper -> setMapping(HistoryButtons[i], i+1);
-    connect(historyMapper, SIGNAL(mapped(int)), ChessBoard, SLOT(repaintBoard(int)));
-    connect(historyMapper, SIGNAL(mapped(int)), this, SLOT(changeNowDisplayPointer(int)));
     //*/
 
-    return;
-}
-
-void mainGameWindow::setDisable() {
-    ChessBoard -> setDisable();
     return;
 }
 
@@ -93,7 +88,7 @@ void mainGameWindow::turncntChanged()
 void mainGameWindow::changeNowDisplayPointer(int p)
 {
     //qDebug() << "changePointer" << p << ChessBoard -> getTurncnt();
-    UndoButton -> setEnabled(p && p == ChessBoard -> getTurncnt());
+    UndoButton -> setEnabled(p && p == ChessBoard -> getTurncnt() && is_ai == 0);
     return;
 }
 
@@ -102,6 +97,17 @@ void mainGameWindow::saveButtonClicked() {
     if (!filename.isNull()) {
         emit saveSignal(filename);
         ChessBoard -> SaveData(filename);
+    }
+    return;
+}
+
+void mainGameWindow::setPlayerDetail(int p1, int p2)
+{
+    is_ai = (p1 > 0 && p2 > 0);
+    if (is_ai) {
+        UndoButton -> setEnabled(0);
+        SaveButton -> setEnabled(0);
+        QuitButton -> setEnabled(0);
     }
     return;
 }

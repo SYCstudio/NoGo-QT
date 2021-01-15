@@ -15,6 +15,7 @@ ioInteractor::ioInteractor(int _Player, mainGameWindow *buf) : QWidget()
     //qDebug() << "Player " << Player[0] << Player[1];
     for (int id = 0; id < 2; id++) AI[id] = new aimodule(Player[id]);
 
+    Game -> setPlayerDetail(Player[1], Player[0]);
     Game -> show();
     Game -> rePaintBoard();
 
@@ -38,6 +39,7 @@ void ioInteractor::startGame()
             Game -> place(ret.first, ret.second);
             //qDebug() << ret.first << ret.second;
             Game -> rePaintBoard();
+            Game -> setDisable();
             //延时
             QEventLoop loop;
             QTimer::singleShot(50, &loop, SLOT(quit()));
@@ -50,7 +52,9 @@ void ioInteractor::startGame()
         Game -> rePaintBoard();
         return;
     }
-    std::pair<int, int> ret = AI[1] -> getPos(Game -> getBoard());
+    Game -> rePaintBoard();
+    Game -> setDisable();
+    std::pair<int, int> ret = AI[AI_ID] -> getPos(Game -> getBoard());
     //qDebug() << ret.first << ret.second;
     Game -> place(ret.first, ret.second, 0);
     Game -> rePaintBoard();
@@ -77,6 +81,9 @@ void ioInteractor::write(QString filename)
 void ioInteractor::aiMove() {
     if ((Game -> getTurncnt() & 1) == AI_ID) return;
     if (Player[0] == 0 && Player[1] == 0) return;
+    //qDebug() << "WOO" ;
+    Game -> rePaintBoard();
+    Game -> setDisable();
     std::pair<int, int> ret = AI[AI_ID] -> getPos(Game -> getBoard());
     //qDebug() << "ret:" << ret.first << ret.second;
     Game -> place(ret.first, ret.second, 0);
