@@ -60,7 +60,7 @@ mainGameWindow::mainGameWindow(QWidget *parent,int show_msg) : QWidget(parent)
     connect(QuitButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ChessBoard, SIGNAL(turncntChanged()), this, SLOT(turncntChanged()));
     connect(ChessBoard, SIGNAL(gameEnded(int)), this, SLOT(gameEnded(int)));
-    connect(UndoButton, SIGNAL(clicked()), ChessBoard, SLOT(undo_buf()));
+    connect(UndoButton, SIGNAL(clicked()), this, SLOT(undo_buf()));
     connect(ChessBoard, SIGNAL(anyGridClicked()), this, SIGNAL(anyGridClicked()));
     connect(SaveButton, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
     //*/
@@ -103,11 +103,20 @@ void mainGameWindow::saveButtonClicked() {
 
 void mainGameWindow::setPlayerDetail(int p1, int p2)
 {
+    P1 = p1; P2 = p2;
     is_ai = (p1 > 0 && p2 > 0);
     if (is_ai) {
         UndoButton -> setEnabled(0);
         SaveButton -> setEnabled(0);
         QuitButton -> setEnabled(0);
     }
+    return;
+}
+
+void mainGameWindow::undo_buf()
+{
+    //qDebug() << P1 << P2;
+    if (P1 == 0 && P2 == 0) ChessBoard -> undo_buf();
+    else ChessBoard -> undo_buf(), ChessBoard -> undo_buf();
     return;
 }

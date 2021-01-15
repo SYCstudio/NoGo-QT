@@ -29,6 +29,7 @@ public:
 private:
     int NowDisplayPointer;//当前显示的棋盘是第几回合
     bool is_ai;
+    int P1, P2;
     chessboardBase * ChessBoard;
     //QLabel *TimePrompt;
     //QLabel *TimeShow;
@@ -49,6 +50,7 @@ private slots:
     void turncntChanged();
     void changeNowDisplayPointer(int p);
     void saveButtonClicked();
+    void undo_buf();
 };
 
 #endif // MAINGAMEWINDOW_H
