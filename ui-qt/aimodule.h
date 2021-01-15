@@ -5,16 +5,20 @@
 #include <random>
 #include <ctime>
 #include <vector>
+#include <cmath>
+#include <map>
 #include "nogochessboard.h"
 
 using std::vector;
 using std::pair;
 using std::make_pair;
+using std::map;
 
 
 namespace myrandomlib
 {
-    static std::mt19937 rnd(time(0));
+    static std::mt19937 rnd(time(0));//rnd(time(0));
+    int getInt(int upper);
 };
 
 class aimodule : public QWidget
@@ -45,5 +49,33 @@ namespace aigreedy {
     const int GRID_VALUE2[4] = {0, 3000, 70000, 15000000};
     pair<int, int> getPos(vector<pair<int, int> > Bd);
 }
+
+namespace aimcts {
+    const double inf = 1e10;
+    const double BALANCE_VALUE = 1.0/sqrt(2);
+    const int MCTS_TIMES = 30000;
+    class NodeData {
+    public:
+        int wint, visit, fa;
+        //int Son[81];
+        map<int, int> Son;
+        vector<int> P;
+        void clear() {
+            //memset(Son, -1, sizeof(Son));
+            Son.clear();
+            wint = visit = fa = 0;
+            P.clear();
+            return;
+        }
+    };
+
+    int getId(int x, int y);
+    int getX(int id);
+    int getY(int id);
+    pair<int, int> getPos(vector<pair<int, int> > Bd);
+    int getNewnode();
+    int dfs(int depth, int u);
+}
+//*/
 
 #endif // AIMODULE_H

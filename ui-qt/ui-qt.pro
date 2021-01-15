@@ -2,6 +2,8 @@ QT       += core gui \
     quick
 QT += svg
 
+RC_ICONS = nogo-icon.ico
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -30,7 +32,6 @@ SOURCES += \
     playerselecter.cpp
 
 HEADERS += \
-    aiheader.h \
     aimodule.h \
     chessboardbase.h \
     disjointsetunion.h \

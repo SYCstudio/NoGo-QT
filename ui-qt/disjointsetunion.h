@@ -22,6 +22,8 @@ public:
     void undo(int top = -1);
 private:
     std::stack<stackData> stack;
+    int _getfa(int x);
+    int _merge(int x,int y);
 };
 
 #endif // DISJOINTSETUNION_H

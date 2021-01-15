@@ -17,21 +17,25 @@ class mainGameWindow : public QWidget
     Q_OBJECT
 public:
     explicit mainGameWindow(QWidget *parent = nullptr,int show_msg = 1);
-    void setDisable();
+    void setDisable(){ChessBoard -> setDisable();}
     int getTurncnt(){return ChessBoard -> getTurncnt();}
     int isGameEnded(){return ChessBoard -> isGameEnded();}
     void rePaintBoard(){ChessBoard -> repaintBoard();}
     std::vector<std::pair<int, int> > getBoard(){return ChessBoard -> getBoard();}
     int check(int x, int y, int show_msg = -1){return ChessBoard -> check(x, y, show_msg);}
     void place(int x, int y,int show_msg = -1){ChessBoard -> place(x, y, show_msg);}
+    void setPlayerDetail(int p1, int p2);
 
 private:
     int NowDisplayPointer;//当前显示的棋盘是第几回合
+    bool is_ai, is_tips;
+    int P1, P2;
     chessboardBase * ChessBoard;
-    QLabel *TimePrompt;
-    QLabel *TimeShow;
+    //QLabel *TimePrompt;
+    //QLabel *TimeShow;
     QLabel *TurnPrompt;
     QLabel *TurnShow;
+    QPushButton *TipsButton;
     QPushButton *SaveButton;
     QPushButton *UndoButton;
     QPushButton *QuitButton;
@@ -47,6 +51,8 @@ private slots:
     void turncntChanged();
     void changeNowDisplayPointer(int p);
     void saveButtonClicked();
+    void undo_buf();
+    void tipschanged();
 };
 
 #endif // MAINGAMEWINDOW_H
