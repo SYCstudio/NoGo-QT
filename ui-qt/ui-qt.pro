@@ -2,6 +2,8 @@ QT       += core gui \
     quick
 QT += svg
 
+RC_ICONS = nogo-icon.ico
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
