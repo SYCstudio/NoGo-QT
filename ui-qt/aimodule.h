@@ -53,7 +53,7 @@ namespace aigreedy {
 namespace aimcts {
     const double inf = 1e10;
     const double BALANCE_VALUE = 1.0/sqrt(2);
-    const int MCTS_TIMES = 30000;
+    const int MCTS_TIMES = 150000;
     class NodeData {
     public:
         int wint, visit, fa;

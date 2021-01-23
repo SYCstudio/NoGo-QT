@@ -43,6 +43,7 @@ private:
     int TopPositionRecord[100];
     bool is_game_end;
     int AirRec[100][4], AncRec[100][4];
+    int Mark[100];
 
     int id(int x, int y) { return x * 9 + y;}
     int getX(int x) {return x/9;}

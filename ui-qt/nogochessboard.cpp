@@ -9,6 +9,7 @@ nogochessboard::nogochessboard(QWidget *parent,int show_msg) : QWidget(parent)
     memset(PlaceY, 0, sizeof(PlaceY));
     memset(BoardStatus, -1, sizeof(BoardStatus));
     memset(TopPositionRecord, 0, sizeof(TopPositionRecord));
+    memset(Mark, 0, sizeof(Mark));
     Turncnt = 0;
     dsu = new disjointSetUnion(81);
     is_game_end = 0;
@@ -47,8 +48,8 @@ int nogochessboard::check(int x, int y, int show_msg) {
 
     //检查气
     int air = 0, flag = 1, col = (Turncnt + 1) & 1;
-    static int Mark[81];
-    memset(Mark, 0, sizeof(Mark));
+    //static int Mark[81];
+    //memset(Mark, 0, sizeof(Mark));
 
     for (int f = 0; f < 4; f++) {
         int xx = x + Fx[f], yy = y + Fy[f];
@@ -84,8 +85,8 @@ int nogochessboard::checkopp(int x, int y) {
 
     //检查气
     int air = 0, flag = 1, col = (Turncnt) & 1;
-    static int Mark[81];
-    memset(Mark, 0, sizeof(Mark));
+    //static int Mark[81];
+    //memset(Mark, 0, sizeof(Mark));
 
     for (int f = 0; f < 4; f++) {
         int xx = x + Fx[f], yy = y + Fy[f];
