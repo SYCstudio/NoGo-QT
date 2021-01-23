@@ -6,21 +6,21 @@ Under developing.
 ## Preperation
 
 - [x] Luogu4997 - understand the rules and check based functions
-- [ ] json connection
+- [x] json connection
 
 ## AI
 
-- [ ] Random AI
-- [ ] AI strategies by hands
+- [x] Random AI
+- [x] AI strategies by hands
 - [ ] Deep Learning (maybe, if time permit)
 
 ## UI
 
-- [ ] Simple UI with Windows bash
-- [ ] Complex UI with QT
-- [ ] Web UI with React/Vue
+- [ ] ~~Simple UI with Windows bash~~
+- [x] Complex UI with QT
+- [ ] ~~Web UI with React/Vue~~
 
 ## Feature
 
-- [ ] Save and load
+- [x] Save and load
 - [ ] Introduction for newbie
